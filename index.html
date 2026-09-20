@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ruilmijnwoning — App prototype v2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+  --blue:#3276cf;--blue-dark:#1957a6;--light-blue:#eaf3ff;--ink:#0f172a;--muted:#64748b;--soft:#f8fafc;
+  --line:#e2e8f0;--green:#16a34a;--red:#dc2626;--shadow:0 18px 55px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#eef2f7}
+button,input,select{font:inherit} button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.app{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+.phone-shell{position:relative;width:min(430px,100%);height:min(860px,calc(100vh - 150px));min-height:720px}
+.phone-btn{position:absolute;background:linear-gradient(180deg,#3a3f47,#111318);border-radius:3px;z-index:5;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.phone-btn.mute{left:-3px;top:108px;width:3px;height:26px}
+.phone-btn.vol-up{left:-3px;top:152px;width:3px;height:50px}
+.phone-btn.vol-down{left:-3px;top:212px;width:3px;height:50px}
+.phone-btn.power{right:-3px;top:170px;width:3px;height:78px}
+.phone{width:100%;height:100%;background:#fff;border:10px solid #111827;border-radius:48px;box-shadow:0 30px 80px rgba(15,23,42,.28);overflow:hidden;position:relative}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:132px;height:26px;background:#0b0d10;border-radius:0 0 16px 16px;z-index:1000}
+.phone::after{content:'';position:absolute;top:9px;left:calc(50% - 42px);width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3a4552,#0b0d10 70%);z-index:1001;pointer-events:none}
+.phone::after{content:'';position:absolute;inset:0;z-index:1001;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 22%,rgba(255,255,255,0) 78%,rgba(255,255,255,.08) 100%)}
+.screen{position:absolute;inset:0;background:#fff;display:none;flex-direction:column;overflow:hidden}
+.screen.active{display:flex}
+.scroll{overflow:auto;scrollbar-width:none}.scroll::-webkit-scrollbar{display:none}
+.top{padding:18px 20px 12px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);z-index:5}
+.brand{display:flex;align-items:center;gap:9px;font-size:15px}.brand img{width:27px;height:27px;object-fit:contain}.brand b{font-weight:800}.brand span{font-weight:500;color:#334155}
+.iconbtn{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:#fff;color:#334155;display:flex;align-items:center;justify-content:center}
+.primary{background:var(--blue);color:#fff;border:0;border-radius:16px;padding:14px 18px;font-weight:700;box-shadow:0 10px 24px rgba(50,118,207,.20)}
+.primary:hover{background:var(--blue-dark)} .secondary{background:#fff;color:#334155;border:1px solid var(--line);border-radius:16px;padding:13px 18px;font-weight:650}
+.ghost{border:0;background:transparent;color:var(--muted);font-weight:600}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1e4fa3}
+h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .tiny{font-size:11px}.small{font-size:13px}.title{font-size:30px;line-height:1.08;letter-spacing:-.035em}
+.card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 8px 25px rgba(15,23,42,.05)}
+.home-img{width:100%;object-fit:cover;display:block}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}.field label{font-size:12px;font-weight:700;color:#475569}.field input,.field select{border:1px solid #dbe3ec;background:#f8fafc;border-radius:14px;padding:13px 14px;outline:none;width:100%;min-width:0}.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(50,118,207,.12)}
+.progress{height:6px;background:#e8eef6;border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:.3s}
+.bottom{margin-top:auto;height:76px;border-top:1px solid var(--line);background:rgba(255,255,255,.96);display:grid;grid-template-columns:repeat(5,1fr);z-index:10}
+.nav{border:0;background:transparent;color:#94a3b8;font-size:10px;font-weight:650;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.nav.active{color:var(--blue)}.nav .ico{font-size:19px;line-height:1}.nav:disabled{opacity:.35;pointer-events:none}
+.hero{position:relative;height:100%;overflow:hidden;background:#0f172a}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover}
+.hero-bg:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,.05) 0%,rgba(15,23,42,.12) 24%,rgba(15,23,42,.74) 55%,rgba(15,23,42,.97) 88%)}
+.hero-inner{position:relative;z-index:2;height:100%;padding:24px 22px 26px;min-height:100%;display:flex;flex-direction:column;color:#fff}
+.hero-brand{display:flex;align-items:center;justify-content:center;gap:9px}
+.hero-brand img{width:30px;height:30px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))}
+.hero-brand span{font-size:17px;font-weight:600;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.hero-brand b{font-weight:800}
+.hero-spacer{flex:1}
+.hero h1{margin:0 0 10px;max-width:340px;font-size:32px;line-height:1.08;letter-spacing:-.04em;text-shadow:0 4px 20px rgba(0,0,0,.4)}
+.hero h1 em{font-style:normal;color:#a8cbf7}
+.hero .lead{line-height:1.65;color:rgba(255,255,255,.85);font-size:13px;max-width:340px;margin:0 0 20px}
+.hero-features{display:flex;flex-direction:column;gap:13px;margin-bottom:18px}
+.hero-feature{display:flex;align-items:center;gap:12px}
+.hf-icon{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(255,255,255,.55);display:grid;place-items:center;font-size:15px;flex:0 0 auto;color:var(--blue)}
+.hf-icon svg{width:18px;height:18px}
+.hero-feature p{margin:0;font-size:12px;line-height:1.5;color:rgba(255,255,255,.92)}
+.dots{display:flex;gap:6px;justify-content:center;margin:2px 0 18px}
+.dot-ind{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
+.dot-ind.active{width:16px;border-radius:99px;background:#fff}
+.pill{background:#fff;border:1px solid var(--line);padding:8px 11px;border-radius:99px;font-size:11px;font-weight:700;color:#475569}
+.hero-actions{display:grid;gap:10px;margin-top:auto}.hero-actions .primary{border-radius:999px}.hero-actions .secondary{border-radius:999px;background:transparent;border:1.5px solid rgba(255,255,255,.55);color:#fff}
+.link{text-align:center;font-size:12px;color:#64748b;font-weight:650;padding:5px}
+.auth{display:flex;flex-direction:column;padding:24px 20px;overflow:auto;background:#eef2f7;min-height:100%}.auth-inner{margin:auto 0;width:100%}.auth .brand{justify-content:center;gap:12px;margin-bottom:18px}.auth .brand img{width:60px;height:60px}.auth .brand span{font-size:19px}
+.auth-title{text-align:center;font-size:27px;font-weight:800;letter-spacing:-.03em;margin:0 0 6px}
+.auth-sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 22px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#e3e8f0;padding:4px;border-radius:15px;margin-bottom:18px}.tabs button{border:0;background:transparent;padding:12px;border-radius:11px;font-weight:700;color:#64748b;transition:.2s}.tabs button.active{background:#fff;color:#0f172a;box-shadow:0 4px 12px rgba(15,23,42,.10)}
+.auth-card{background:#fff;border-radius:24px;padding:24px 20px;box-shadow:0 16px 44px rgba(15,23,42,.10)}
+.form{display:grid;gap:16px}
+.auth-card .field label{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#64748b}
+.auth-card .field input{border:1px solid #e2e8f0;background:#f8fafc;border-radius:14px;padding:14px 15px;font-size:14px}
+.field-label-row{display:flex;justify-content:space-between;align-items:baseline}
+.field-label-row label{margin:0}
+.forgot{font-size:12px;font-weight:700;color:var(--blue)}
+.terms-row{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#475569;line-height:1.5;cursor:pointer}
+.terms-row input{margin-top:3px;width:16px;height:16px;accent-color:var(--blue)}
+.auth-card .primary{width:100%;border-radius:16px;padding:15px;font-size:15px}
+.auth-switch{text-align:center;font-size:13px;color:#64748b;margin:0}
+.auth-switch a{color:var(--blue);font-weight:800;cursor:pointer}
+.or{display:flex;align-items:center;gap:9px;color:#94a3b8;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin:22px 0 16px}.or:before,.or:after{content:"";height:1px;background:#dbe3ec;flex:1}
+.social{display:grid;grid-template-columns:1fr 1fr;gap:10px}.social button{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border:1px solid #e2e8f0;background:#fff;border-radius:16px;font-weight:700;color:#0f172a}.social svg{width:18px;height:18px}
+.choice{border:1px solid var(--line);background:#fff;border-radius:17px;padding:14px;text-align:left;display:flex;justify-content:space-between;align-items:center;font-weight:650;width:100%}.choice.selected{border-color:#8bb5ec;background:#eff6ff}.check{width:20px;height:20px;border-radius:50%;border:1px solid #cbd5e1;display:grid;place-items:center;font-size:11px;flex:0 0 auto}.choice.selected .check{background:var(--blue);color:#fff;border-color:var(--blue)}
+.onboard{display:flex;flex-direction:column;padding:22px 20px;overflow:auto;min-height:100%}
+.ob-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ob-back{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:15px;display:grid;place-items:center;padding:0;color:#334155}.ob-back.hidden{visibility:hidden}
+.ob-dots{display:flex;gap:6px}.ob-dot{width:6px;height:6px;border-radius:50%;background:#dbe3ec}.ob-dot.active{width:18px;border-radius:99px;background:var(--blue)}
+.ob-skip{font-size:12px}
+.ob-steps{flex:1;display:flex;flex-direction:column;position:relative}
+.ob-step{display:none;flex-direction:column;justify-content:center;flex:1}.ob-step.active{display:flex}
+.ob-title{font-size:25px;letter-spacing:-.035em;line-height:1.12;margin:20px 0 8px;font-weight:800}
+.ob-copy{font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:20px}
+.ob-options{display:grid;gap:10px}
+.ob-add{border:1.5px dashed #cbd5e1;background:transparent;color:#64748b;border-radius:17px;padding:14px;font-weight:650;text-align:center}
+.ob-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ob-tile{border:1px solid var(--line);background:#fff;border-radius:17px;padding:22px 14px;text-align:center;font-weight:800;font-size:16px}.ob-tile.selected{border-color:#8bb5ec;background:#eff6ff;color:#1e4fa3}
+.ob-final{text-align:center;display:flex;flex-direction:column;align-items:center}
+.ob-final-icon{width:72px;height:72px;border-radius:50%;background:#eff6ff;color:var(--blue);display:grid;place-items:center;font-size:30px;margin-bottom:10px}
+.ob-final .primary{width:100%;margin-top:14px}
+.ob-search{width:100%;border:1px solid #e2e8f0;background:#f8fafc;border-radius:14px;padding:13px 15px;font-size:14px;margin-bottom:12px}
+.ob-fields{display:grid;gap:14px}.ob-fields.two{grid-template-columns:1fr 1fr}.ob-fields>.field{min-width:0}
+.yn-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.yn-label{font-weight:650;font-size:13px}
+.yn-toggle{display:flex;gap:4px;background:#eef2f7;padding:3px;border-radius:99px;flex:0 0 auto}
+.yn-btn{border:0;background:transparent;padding:8px 16px;border-radius:99px;font-weight:700;font-size:12px;color:#64748b}.yn-btn.selected{background:#fff;color:#0f172a;box-shadow:0 2px 6px rgba(15,23,42,.12)}
+.listing{display:flex;flex-direction:column;padding:22px 20px;overflow:auto;min-height:100%;background:#f6f8fb}
+.ls-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ls-steps{flex:1;display:flex;flex-direction:column;position:relative}
+.ls-step{display:none;flex-direction:column;justify-content:center;flex:1}.ls-step.active{display:flex}
+.ls-title{font-size:23px;letter-spacing:-.035em;line-height:1.12;margin:18px 0 16px;font-weight:800}
+.ls-card{background:#fff;border-radius:26px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.ls-card-photo{height:170px;position:relative;background:#e2e8f0}.ls-card-photo img{width:100%;height:100%;object-fit:cover}
+.ls-add-photo{position:absolute;left:12px;top:12px;background:rgba(15,23,42,.55);color:#fff;border:1px dashed rgba(255,255,255,.6);border-radius:12px;padding:8px 12px;font-size:11px;font-weight:700}
+.ls-progress-badge{position:absolute;right:12px;top:12px;background:#fff;border-radius:99px;padding:6px 11px;font-size:11px;font-weight:800;color:var(--blue);box-shadow:0 5px 15px rgba(0,0,0,.12)}
+.ls-card-body{padding:16px}.ls-card-body h3{font-size:19px;letter-spacing:-.025em}
+.ls-card-price{font-size:20px;font-weight:800;color:var(--blue);margin-top:6px}
+.ls-card-facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.ls-stepper-label{font-size:13px;font-weight:700;color:#334155;margin:0 0 8px}
+.ls-stepper{display:flex;align-items:center;justify-content:center;gap:22px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:18px}
+.ls-step-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:#f8fafc;font-size:19px;font-weight:700;color:var(--blue)}
+.ls-step-value{text-align:center;min-width:70px}.ls-step-value b{display:block;font-size:24px;letter-spacing:-.02em}.ls-step-value span{font-size:11px;color:#64748b;font-weight:700}
+.ls-map{height:220px;border-radius:22px;background:linear-gradient(160deg,#dbeafe,#eef2f7 60%);position:relative;overflow:hidden;border:1px solid var(--line)}
+.ls-map:before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,#b9d3f5 1px,transparent 1px);background-size:18px 18px;opacity:.6}
+.ls-pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);font-size:34px;filter:drop-shadow(0 6px 10px rgba(15,23,42,.25))}
+.ls-map-label{margin-top:12px;font-weight:700;text-align:center}
+.ls-chips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ls-chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:12px 10px;font-weight:700;font-size:13px;text-align:center}.ls-chip.selected{background:var(--blue);border-color:var(--blue);color:#fff}
+.ls-preview-card{background:#fff;border-radius:26px;border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.ls-preview-photo{height:190px}.ls-preview-photo img{width:100%;height:100%;object-fit:cover}
+.ls-preview-body{padding:18px}.ls-preview-body h3{font-size:20px;letter-spacing:-.03em}
+.ls-preview-price{font-size:14px;color:#475569;margin-top:6px}
+.ls-preview-meta{font-size:12px;color:#64748b;margin-top:10px;line-height:1.6}
+.ls-badge{display:inline-block;margin-top:12px;background:#eff6ff;color:#1e4fa3;font-size:11px;font-weight:800;padding:6px 10px;border-radius:99px}
+.ls-publish{width:100%;margin-top:18px}
+.discover{background:#f6f8fb;overflow:auto;display:flex;flex-direction:column;flex:1;min-height:0}.discover-content{padding:17px 16px 16px;flex:1;display:flex;flex-direction:column;min-height:0}.discover-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:14px}.discover h2{font-size:24px;letter-spacing:-.03em}.count{font-size:11px;color:#64748b;font-weight:700}
+.filters{display:flex;gap:7px;overflow:auto;padding-bottom:11px}.filter{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 11px;font-size:11px;font-weight:700;color:#475569}
+.deck{position:relative;flex:1;min-height:0}.deck-card{position:absolute;inset:0;background:#fff;border:1px solid var(--line);border-radius:29px;overflow:hidden;box-shadow:var(--shadow);transition:.35s}.deck-card.back{transform:scale(.95) translateY(12px);opacity:.6}.deck-image{height:100%;position:relative}.deck-image img{width:100%;height:100%;object-fit:cover}.match{position:absolute;left:14px;top:14px;background:#fff;border-radius:99px;padding:8px 11px;font-size:11px;font-weight:800;color:var(--blue);box-shadow:0 7px 20px rgba(0,0,0,.12)}.match.static{position:static;display:inline-block;margin:8px 0 0}.heart{position:absolute;right:14px;top:24px;width:39px;height:39px;border-radius:50%;background:rgba(255,255,255,.94);border:0;font-size:19px;color:#64748b;z-index:2}.heart.is-fav{color:var(--red)}.deck-info{padding:16px 17px}.deck-info h3{font-size:22px;letter-spacing:-.025em}.price{font-size:18px;font-weight:800;color:var(--blue);margin-top:4px}.facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.fact{background:#f1f5f9;border-radius:99px;padding:7px 9px;font-size:10px;font-weight:700;color:#475569}.why{margin-top:12px;font-size:11px;color:#475569;line-height:1.45}.actions{display:grid;grid-template-columns:52px 1fr 52px;gap:10px;margin-top:13px}.round{border:1px solid var(--line);background:#fff;border-radius:18px;font-size:20px}.interest{background:var(--blue);border:0;color:#fff;border-radius:18px;font-weight:800}
+.detail{overflow:auto;background:#fff}.detail-img{height:330px;position:relative}.detail-img img{width:100%;height:100%;object-fit:cover}.backbtn{position:absolute;left:15px;top:24px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;z-index:2}.detail-body{padding:20px}.detail-body h1{font-size:28px;letter-spacing:-.035em}.detail-body .sub{margin-top:5px;color:var(--muted);font-size:13px}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.metric{background:#f8fafc;border-radius:16px;padding:12px}.metric b{display:block;font-size:15px}.metric span{font-size:10px;color:#64748b}.matchbox{background:#eff6ff;border:1px solid #cfe2fb;border-radius:20px;padding:15px}.matchbox strong{color:#1e4fa3}.matchrow{display:flex;justify-content:space-between;font-size:11px;padding-top:9px}.matchrow b{color:#166534}
+.matchscreen{background:#0f172a;color:#fff;overflow:auto;flex:1;height:100%}.matchtop{padding:20px;display:flex;justify-content:flex-end}.celebrate{text-align:center;padding:22px 24px}.spark{font-size:45px}.matchscreen h1{font-size:32px;letter-spacing:-.04em;margin:12px 0}.homes{position:relative;height:250px;margin:20px auto;width:300px}.home-card{position:absolute;width:148px;height:205px;border:4px solid #fff;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.3)}.home-card img{width:100%;height:100%;object-fit:cover}.home-card:first-child{left:0;top:20px;transform:rotate(-6deg)}.home-card:nth-child(2){right:0;top:0;transform:rotate(6deg)}.swap{position:absolute;left:50%;top:97px;transform:translateX(-50%);background:var(--blue);width:55px;height:55px;border-radius:50%;display:grid;place-items:center;font-size:24px;border:4px solid #0f172a;z-index:2}.match-actions{display:grid;gap:9px}.match-actions .primary{background:#fff;color:#0f172a;box-shadow:none}.match-actions .secondary{background:transparent;color:#fff;border-color:#475569}
+.chat{background:#f8fafc;overflow:hidden}.chatbar{padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:50%;background:#e6f0fc;color:#1e4fa3;display:grid;place-items:center;font-weight:800;font-size:12px}.chatbody{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:11px}.bubble{max-width:78%;padding:11px 13px;border-radius:18px;font-size:12px;line-height:1.45}.them{background:#fff;border:1px solid var(--line);border-top-left-radius:6px}.me{background:var(--blue);color:#fff;align-self:flex-end;border-top-right-radius:6px}.milestone{background:#eff6ff;border:1px solid #d8e8fb;color:#1e4fa3;padding:9px 12px;border-radius:12px;text-align:center;font-size:10px;font-weight:700}.composer{margin-top:auto;padding:10px;background:#fff;border-top:1px solid var(--line);display:flex;gap:7px}.composer input{flex:1;border:1px solid var(--line);background:#f8fafc;border-radius:15px;padding:11px 13px}.composer button{width:43px;border:0;border-radius:14px;background:var(--blue);color:#fff}
+.messages{background:#f8fafc}.messages-body{padding-bottom:10px}
+.msg-row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);cursor:pointer}
+.msg-row-body{flex:1;min-width:0}
+.msg-row-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.msg-row-top b{font-size:14px}
+.msg-time{font-size:11px;color:#94a3b8;flex:0 0 auto}
+.msg-preview{margin-top:3px;font-size:12px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unread-dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex:0 0 auto}
+.exchange{overflow:auto;background:#f8fafc}.exchange-head{padding:22px 18px;background:#fff;border-bottom:1px solid var(--line)}.status{display:inline-flex;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;padding:7px 10px;border-radius:99px;font-size:10px;font-weight:800}.timeline{padding:18px}.timeline-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;margin-bottom:9px;display:flex;gap:12px}.dot{width:27px;height:27px;border-radius:50%;background:#e2e8f0;color:#64748b;display:grid;place-items:center;font-size:11px;font-weight:800;flex:0 0 auto}.done .dot{background:#dcfce7;color:#166534}.current .dot{background:#dbeafe;color:#1e4fa3}.timeline-card h3{font-size:13px}.timeline-card p{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.45}
+.profile{overflow:auto;background:#f8fafc}.profile-body{padding:18px}.profile-home{overflow:hidden}.profile-home img{height:180px}.profile-home .p{padding:15px}.verify{margin-top:12px}.verify-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:12px}.ok{color:#15803d;font-weight:800}
+.toast{position:absolute;left:16px;right:16px;bottom:88px;background:#0f172a;color:#fff;padding:12px 14px;border-radius:14px;font-size:11px;z-index:50;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
+.splash{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#3f83db 0%,#2f5fa8 55%,#1d3654 100%)}
+.splash-logo{width:88px;height:88px;border-radius:26px;background:rgba(255,255,255,.16);display:grid;place-items:center;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+.splash-logo img{width:46px;height:46px;object-fit:contain}
+.splash-word{margin-top:18px;font-size:21px;color:#fff;letter-spacing:-.01em}.splash-word b{font-weight:800}
+.splash-bar{width:190px;height:3px;border-radius:99px;background:rgba(255,255,255,.25);margin-top:30px;overflow:hidden}
+.splash-bar i{display:block;width:40%;height:100%;background:#fff;border-radius:99px;animation:splashLoad 1.3s ease-in-out infinite}
+@keyframes splashLoad{0%{transform:translateX(-120%)}100%{transform:translateX(360%)}}
+</style>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+:root{--blue:#3276cf;--ink:#142235;--muted:#718095;--cream:#fbfaf7;--line:#e6ebf0;--shadow:0 22px 65px rgba(20,34,53,.12)}
+body{background:linear-gradient(160deg,#fdf3e6 0%,#f7ede4 40%,#eef1f6 75%,#e7ecf3 100%)!important;font-family:"DM Sans",system-ui,sans-serif!important;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:-10%;z-index:0;background:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=60') center/cover;filter:blur(70px) saturate(1.15) brightness(1.08);opacity:.3;pointer-events:none}
+body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradient(circle at 18% 10%,rgba(255,196,140,.35),transparent 45%),radial-gradient(circle at 85% 90%,rgba(120,170,255,.3),transparent 50%);pointer-events:none}
+.app{position:relative;z-index:1}
+.present-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+.present-brand{text-align:center;max-width:380px;padding:0 20px}
+.present-brand img{width:30px;height:30px;object-fit:contain;filter:drop-shadow(0 10px 22px rgba(50,118,207,.3))}
+.present-brand h1{font-family:"Playfair Display",serif;font-size:20px;letter-spacing:-.03em;color:#1e2b3d;margin:8px 0 0}
+.present-brand p{margin:4px 0 0;color:#6b7686;font-size:11.5px;font-style:italic;line-height:1.4}
+.phone{background:var(--cream)!important}
+.screen{background:var(--cream)!important}
+.hero{background:radial-gradient(circle at 82% 12%,#dcecff 0,transparent 29%),linear-gradient(145deg,#f8fbff,#faf7f1)!important}
+.hero h1,.step-title,.auth h1{font-family:"Playfair Display",serif!important;letter-spacing:-.045em!important}
+.hero h1{font-size:38px!important}
+.hero .lead{font-size:13px!important;line-height:1.75!important}
+.collage img,.deck-image img,.detail-img img{filter:saturate(.96) contrast(1.02)}
+.card,.deck-card,.profile-home,.verify{box-shadow:0 12px 40px rgba(20,34,53,.07)!important}
+.primary{transition:transform .18s,box-shadow .18s!important}.primary:hover{transform:translateY(-2px)!important;box-shadow:0 15px 32px rgba(50,118,207,.28)!important}
+.choice{transition:transform .18s,border-color .18s,background .18s!important}.choice:active{transform:scale(.985)!important}
+.deck-card{touch-action:none!important}
+.swipehint{letter-spacing:.02em}
+.matchscreen{background:radial-gradient(circle at 50% 8%,#1d3654,#0f172a 45%)!important}
+.matchscreen h1{font-family:"Playfair Display",serif!important}
+</style>
+
+<style>
+/* floating pill navbar */
+.bottom{margin:auto 14px 14px;height:70px;border-radius:26px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.92)!important;backdrop-filter:blur(16px);box-shadow:0 16px 38px rgba(15,23,42,.18)!important}
+.nav .ico{width:34px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:13px;margin:0 auto 3px;transition:.2s;position:relative}
+.nav.active .ico{background:rgba(50,118,207,.14);color:var(--blue)}
+.dot-badge{position:absolute;top:-2px;right:-2px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+
+/* richer swipe card */
+.sub-loc{font-size:11px;color:var(--muted);font-weight:600;margin-top:3px}
+.settings-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:12px;font-weight:650}
+.settings-row:last-child{border-bottom:0}
+.switch{width:44px;height:26px;border-radius:99px;background:#e2e8f0;border:0;position:relative;padding:0;flex:0 0 auto}
+.switch i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.2);transition:.2s;display:block}
+.switch.on{background:var(--blue)}
+.switch.on i{left:21px}
+.settings-link{cursor:pointer}
+
+/* filter modal */
+.modal-overlay{position:absolute;inset:0;background:rgba(15,23,42,.5);display:none;align-items:flex-end;z-index:70}
+.modal-overlay.show{display:flex}
+.filter-sheet{width:100%;max-height:90%;background:#fff;border-radius:28px 28px 0 0;box-shadow:0 -20px 50px rgba(15,23,42,.25);display:flex;flex-direction:column;overflow:hidden}
+.filter-head{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);flex:0 0 auto}
+.filter-head h3{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.filter-body{padding:18px 20px 6px;overflow:auto;display:flex;flex-direction:column;gap:22px}
+.filter-label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin:0 0 10px}
+.seg-toggle{display:grid;grid-template-columns:1fr 1fr;background:#eef2f7;padding:4px;border-radius:15px}
+.seg-toggle button{border:0;background:transparent;padding:11px;border-radius:11px;font-weight:700;color:#64748b;font-size:13px}
+.seg-toggle button.active{background:#fff;color:var(--blue);box-shadow:0 4px 12px rgba(15,23,42,.10)}
+.filter-hint{font-size:11px;color:var(--muted);margin:8px 0 0}
+.filter-location{display:flex;align-items:center;gap:8px;border:1px solid #e2e8f0;background:#f8fafc;border-radius:14px;padding:13px 14px}
+.filter-location input{flex:1;border:0;background:transparent;outline:none;font-size:13px;color:#0f172a;min-width:0}
+.filter-location span{color:#94a3b8;font-size:13px}
+.radius-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.radius-pill{background:#eff6ff;color:var(--blue);font-weight:800;font-size:11px;padding:6px 11px;border-radius:99px}
+.filter-slider{width:100%;accent-color:var(--blue)}
+.price-range{display:flex;align-items:center;gap:10px}
+.price-input{flex:1;border:1px solid #e2e8f0;background:#f8fafc;border-radius:14px;padding:13px 14px;text-align:center;font-weight:700;font-size:14px;outline:none;min-width:0}
+.rooms-row{display:flex;gap:8px}
+.room-pill{flex:1;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px 0;text-align:center;font-weight:800;font-size:13px;color:#334155}
+.room-pill.selected{background:var(--blue);border-color:var(--blue);color:#fff}
+.radio-list{display:flex;flex-direction:column}
+.radio-row{display:flex;align-items:center;justify-content:space-between;padding:14px 4px;border-bottom:1px solid var(--line);font-weight:650;font-size:13px}
+.radio-row:last-child{border-bottom:0}
+.radio-row input[type=radio]{width:20px;height:20px;accent-color:var(--blue)}
+.filter-footer{padding:14px 20px 20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px;flex:0 0 auto}
+.reset-btn{background:transparent;border:0;color:var(--muted);font-weight:700;padding:6px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px}
+
+/* interactive swipe deck */
+.swipe-label{position:absolute;top:36%;padding:8px 14px;border:3px solid;border-radius:10px;font-weight:900;font-size:19px;letter-spacing:.04em;text-transform:uppercase;opacity:0;pointer-events:none}
+.swipe-label.like{left:16px;color:#16a34a;border-color:#16a34a;transform:rotate(-14deg)}
+.swipe-label.pass{right:16px;color:var(--red);border-color:var(--red);transform:rotate(14deg)}
+.round:disabled{opacity:.35;pointer-events:none}
+.deck-empty{display:none;align-items:center;justify-content:center;background:#fff;text-align:center}
+.deck-empty-inner{padding:26px}
+.deck-empty-icon{font-size:38px;margin-bottom:10px}
+.deck-empty-inner h3{font-size:17px;margin-bottom:6px}
+.deck-empty-inner .primary,.deck-empty-inner .secondary{width:100%;margin-top:10px}
+@media (prefers-reduced-motion: reduce){
+  .deck-card{transition:opacity .2s ease!important}
+  .swipe-label{display:none}
+}
+
+/* discover redesign v4 */
+.deck-meta{font-size:12.5px;color:#475569;font-weight:600;margin-top:9px}
+.match-reasons{margin-top:14px}
+.mr-title{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#64748b;margin:0 0 8px}
+.mr-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:#334155;padding:3px 0;font-weight:600}
+.mr-check{color:var(--blue);font-weight:800;width:14px;flex:0 0 auto}
+.action-bar{display:flex;align-items:center;justify-content:center;gap:22px;margin-top:18px;padding-bottom:4px;flex:0 0 auto}
+.ab-btn{width:54px;height:54px;border-radius:9999px;border:0;background:#fff;box-shadow:0 8px 20px rgba(18,33,58,.10);font-size:18px;display:flex;align-items:center;justify-content:center;color:#64748b;cursor:pointer;transition:transform 180ms ease,box-shadow 180ms ease}
+.ab-btn:hover{transform:translateY(-2px)}
+.ab-btn:active{transform:scale(.94)}
+.ab-btn:disabled{opacity:.35;pointer-events:none;transform:none}
+.ab-undo{background:#c7dcf5;color:#1957a6;width:52px;height:52px;box-shadow:0 8px 18px rgba(50,118,207,.18)}
+.ab-dislike{color:#e0727f}
+.ab-fav{color:var(--blue)}
+.ab-fav.is-fav{color:#f5a623}
+.ab-fav.is-fav #starIcon{fill:currentColor}
+.ab-fav.pop{animation:abPop .32s ease}
+.ab-like{background:var(--blue);color:#fff;width:58px;height:58px;box-shadow:0 10px 24px rgba(50,118,207,.28)}
+.ab-like.pulse{animation:abPulse .38s ease}
+@keyframes abPop{0%{transform:scale(1)}45%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes abPulse{0%{transform:scale(1);box-shadow:0 10px 24px rgba(50,118,207,.28)}40%{transform:scale(1.14);box-shadow:0 16px 34px rgba(50,118,207,.5)}100%{transform:scale(1);box-shadow:0 10px 24px rgba(50,118,207,.28)}}
+.saved{background:#f6f8fb}
+.saved-top{padding:18px 20px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--line);z-index:5}
+.saved-top h2{font-size:16px;font-weight:800;letter-spacing:-.01em}
+.saved-req-pill{border:0;background:var(--light-blue);color:var(--blue);border-radius:99px;padding:8px 12px;font-size:11.5px;font-weight:800;white-space:nowrap}
+.saved-tabs{display:grid;grid-template-columns:repeat(3,1fr);background:#e9edf3;padding:4px;border-radius:16px;margin:14px 16px 0;gap:2px}
+.saved-tabs button{border:0;background:transparent;padding:10px 6px;border-radius:12px;font-weight:700;font-size:12px;color:#64748b;display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s}
+.saved-tabs button.active{background:#fff;color:#0f172a;box-shadow:0 4px 12px rgba(15,23,42,.10)}
+.saved-count{background:#dbe3ec;color:#475569;border-radius:99px;min-width:19px;height:19px;padding:0 5px;font-size:10.5px;font-weight:800;display:grid;place-items:center}
+.saved-tabs button.active .saved-count{background:var(--blue);color:#fff}
+.saved-list{padding:14px 16px 6px;display:flex;flex-direction:column;gap:12px}
+.saved-row{display:flex;gap:12px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 6px 18px rgba(15,23,42,.05)}
+.saved-thumb{width:60px;height:60px;border-radius:16px;object-fit:cover;flex:0 0 auto;background:#e2e8f0}
+.saved-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;justify-content:center}
+.saved-row-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.saved-row-top h3{font-size:14.5px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.saved-price{font-size:13px;font-weight:800;color:var(--blue);white-space:nowrap;flex:0 0 auto}
+.saved-row-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.saved-sub{font-size:11.5px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.saved-actions{display:flex;gap:8px;flex:0 0 auto}
+.saved-thumb-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;color:#475569;transition:transform 150ms ease,background 150ms ease,color 150ms ease;flex:0 0 auto;cursor:pointer}
+.saved-thumb-btn:active{transform:scale(.9)}
+.saved-thumb-btn.up:hover{color:#fff;background:var(--blue);border-color:var(--blue)}
+.saved-thumb-btn.down:hover{color:#fff;background:var(--red);border-color:var(--red)}
+.saved-empty{text-align:center;color:var(--muted);font-size:12.5px;padding:50px 20px}
+.saved-end{text-align:center;color:#94a3b8;font-size:12px;padding:8px 0 24px}
+.detail-section{padding-top:16px;margin-top:16px;border-top:1px solid var(--line)}
+.detail-desc{font-size:13px;line-height:1.65;color:#334155;margin-top:6px}
+.amenity-row{font-size:13px;color:#334155;font-weight:600;padding:5px 0}
+.landlord-row{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:13px;font-weight:700}
+.verified-pill{background:var(--light-blue);color:var(--blue);font-size:10px;font-weight:800;padding:5px 9px;border-radius:99px}
+
+/* v5: badges, header rows, overview panel */
+.badge-row{position:absolute;left:12px;top:12px;right:12px;display:flex;gap:6px;flex-wrap:wrap;z-index:2}
+.badge-row.static-row{position:static;margin:8px 0 0}
+.photo-dots{position:absolute;left:12px;right:12px;top:10px;display:flex;gap:4px;z-index:2;pointer-events:none}
+.photo-dots span{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.4)}
+.photo-dots span.active{background:#fff}
+.deck-image .badge-row,.detail-img .badge-row{top:24px}
+.photo-tap{position:absolute;top:0;bottom:0;width:50%;z-index:1;background:transparent;border:0;padding:0;cursor:pointer}
+.photo-tap.left{left:0}
+.photo-tap.right{right:0}
+.pill-match{background:#fff;border-radius:99px;padding:8px 11px;font-size:11px;font-weight:800;color:var(--blue);box-shadow:0 7px 20px rgba(0,0,0,.12)}
+.pill-new{background:var(--green);color:#fff;border-radius:99px;padding:8px 11px;font-size:11px;font-weight:800;box-shadow:0 7px 20px rgba(0,0,0,.12)}
+.pill-liked{background:var(--red);color:#fff;border-radius:99px;padding:8px 11px;font-size:11px;font-weight:800;box-shadow:0 7px 20px rgba(0,0,0,.12);display:flex;align-items:center;gap:4px}
+.pill-liked.liked-above-title{display:inline-flex;margin-bottom:8px;padding:5px 9px;font-size:9.5px}
+.deck-head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.deck-overlay-info{position:absolute;left:0;right:0;bottom:0;padding:18px 17px;z-index:1;background:linear-gradient(180deg,rgba(15,23,42,0) 0%,rgba(15,23,42,.05) 30%,rgba(15,23,42,.55) 70%,rgba(15,23,42,.82) 100%)}
+.deck-overlay-info #deckTitle{color:#fff}
+.deck-overlay-info #deckPrice{color:var(--blue);background:#fff;border-radius:99px;padding:6px 12px;font-size:15px}
+.deck-overlay-info #deckSub{color:rgba(255,255,255,.82)}
+.deck-overlay-info #deckFacts .meta-icon-item,.deck-overlay-info #deckFacts .ico{color:#fff}
+.deck-head-row h3{margin:0}
+.deck-head-row .price{white-space:nowrap;margin-top:2px}
+.deck-sub-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px}
+.info-pill{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 10px;font-size:10.5px;font-weight:700;color:var(--blue);white-space:nowrap;flex:0 0 auto}
+.deck-meta-icons{display:flex;gap:16px;margin-top:10px}
+.meta-icon-item{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#334155}
+.meta-icon-item .ico{color:var(--blue);font-size:14px}
+.detail-section-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.detail-section-head .ico-box{width:34px;height:34px;border-radius:10px;background:var(--light-blue);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto}
+.detail-section-head h3{font-size:16px;letter-spacing:-.02em}
+.info-row{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;padding:11px 13px;margin-bottom:8px}
+.info-icon{width:36px;height:36px;border-radius:11px;background:#fff;box-shadow:0 4px 10px rgba(15,23,42,.1);display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto;color:var(--blue)}
+.info-label{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#94a3b8}
+.info-value{font-size:13.5px;font-weight:800;color:#0f172a;margin-top:2px}
+
+/* v6: icon set + flag button */
+.heart{display:flex;align-items:center;justify-content:center}
+.flag-btn{right:60px;color:#64748b}
+.ico svg,.ico-box svg,.info-icon svg,.ls-pin svg,.deck-empty-icon svg{display:block}
+.ls-pin svg{width:34px;height:34px;color:var(--blue)}
+.deck-empty-icon{color:var(--blue)}
+.spark{color:#fff}
+@media(max-width:600px){.app{padding:0}.phone-shell{width:100%;height:100vh;min-height:0}.phone{border:0;border-radius:0;box-shadow:none}.phone::before,.phone::after,.phone-btn{display:none}}
+
+/* keep the first content row clear of the phone notch */
+.hero-inner{padding-top:42px}
+.top{padding-top:30px}
+.saved-top{padding-top:30px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="present-wrap">
+  <div class="present-brand">
+    <img src="logo-icon.png" alt="Ruilmijnwoning logo">
+    <h1>Ruilmijnwoning</h1>
+    <p>Het platform voor woningruil.</p>
+  </div>
+<div class="phone-shell">
+  <span class="phone-btn mute"></span>
+  <span class="phone-btn vol-up"></span>
+  <span class="phone-btn vol-down"></span>
+  <span class="phone-btn power"></span>
+<div class="phone">
+
+<section id="splash" class="screen active">
+  <div class="splash">
+    <div class="splash-logo"><img src="logo-icon.png" alt="Ruilmijnwoning logo"></div>
+    <div class="splash-word"><b>ruil</b>mijnwoning</div>
+    <div class="splash-bar"><i></i></div>
+  </div>
+</section>
+
+<section id="landing" class="screen">
+  <div class="hero">
+    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=85" alt=""></div>
+    <div class="hero-inner">
+      <div class="hero-brand"><img src="logo-icon.png" alt="Ruilmijnwoning logo"><span><b>ruil</b>mijnwoning</span></div>
+      <div class="hero-spacer"></div>
+      <h1>Wissel van woning,<br><em>verander je leven.</em></h1>
+      <p class="lead">Snel, veilig en zonder wachtlijsten. Vind duizenden huurders die willen ruilen in heel Nederland.</p>
+      <div class="hero-features">
+        <div class="hero-feature"><span class="hf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="10" height="18"/><rect x="14" y="9" width="6" height="12"/><line x1="7" y1="7" x2="7" y2="7"/><line x1="11" y1="7" x2="11" y2="7"/><line x1="7" y1="11" x2="7" y2="11"/><line x1="11" y1="11" x2="11" y2="11"/><line x1="7" y1="15" x2="7" y2="15"/></svg></span><p>Blader door duizenden advertenties van huurders die ook willen ruilen.</p></div>
+        <div class="hero-feature"><span class="hf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.2 8.5-7 10-3.8-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span><p>Wij verifiëren advertenties en bieden een veilig platform voor communicatie.</p></div>
+        <div class="hero-feature"><span class="hf-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/></svg></span><p>Plaats je woning in enkele minuten online zonder verborgen kosten.</p></div>
+      </div>
+      <div class="dots"><span class="dot-ind active"></span><span class="dot-ind"></span><span class="dot-ind"></span></div>
+      <div class="hero-actions">
+        <button class="primary" onclick="go('auth')">Start met woningruil</button>
+        <button class="secondary" onclick="go('auth');setAuth('login')">Ik heb al een account</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="auth" class="screen">
+  <div class="auth scroll">
+    <div class="auth-inner">
+    <div class="brand"><img src="logo-icon.png" alt=""></div>
+    <h1 class="auth-title" id="authTitle">Welkom terug</h1>
+    <p class="auth-sub" id="authSub">Log in op je account om verder te gaan.</p>
+    <div class="tabs"><button id="loginTab" class="active" onclick="setAuth('login')">Inloggen</button><button id="registerTab" onclick="setAuth('register')">Registreren</button></div>
+    <div class="auth-card">
+      <div class="form">
+        <div class="field"><label>E-mailadres</label><input id="email" type="email" placeholder="jij@email.nl"></div>
+        <div class="field">
+          <div class="field-label-row"><label>Wachtwoord</label><a class="forgot" id="forgotLink" onclick="toast('Wachtwoord reset e-mail verstuurd')">Vergeten?</a></div>
+          <input id="password" type="password" placeholder="••••••••">
+        </div>
+        <label class="terms-row" id="termsRow" style="display:none"><input type="checkbox" checked><span>Ik ben huurder van een woningcorporatie en ga akkoord met de ruilvoorwaarden.</span></label>
+        <button class="primary" id="authBtn" onclick="authContinue()">Inloggen</button>
+        <p class="auth-switch" id="authSwitch">Nog geen ruilaccount? <a onclick="setAuth('register')">Registreer hier</a></p>
+      </div>
+    </div>
+    <div class="or">of ga direct verder met</div>
+    <div class="social">
+      <button onclick="authContinue()"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.66-.22-2.45H12v4.64h6.47c-.28 1.49-1.13 2.76-2.4 3.6v3h3.88c2.27-2.09 3.57-5.17 3.57-8.79z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.95H1.26v3.11C3.24 21.3 7.29 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.3A7.2 7.2 0 0 1 4.9 12c0-.8.14-1.57.37-2.3V6.59H1.26A11.98 11.98 0 0 0 0 12c0 1.94.46 3.77 1.26 5.41z"/><path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.59 1.79l3.44-3.44C17.95 1.19 15.24 0 12 0 7.29 0 3.24 2.7 1.26 6.59l4.01 3.11C6.22 6.86 8.87 4.75 12 4.75z"/></svg>Google</button>
+      <button onclick="authContinue()"><svg viewBox="0 0 24 24" fill="#0f172a"><path d="M16.365 1.43c0 1.14-.475 2.267-1.229 3.09-.81.87-2.13 1.55-3.204 1.46-.146-1.11.44-2.33 1.19-3.11C13.94.98 15.38.31 16.365 1.43zM20.4 17.2c-.55 1.27-.82 1.84-1.53 2.97-1 1.56-2.4 3.5-4.14 3.51-1.55.02-1.95-1-4.05-1-2.1 0-2.56.98-4.1 1.02-1.68.05-2.96-1.68-3.96-3.24-2.16-3.37-2.55-7.42-1.13-9.55.99-1.5 2.6-2.44 4.24-2.44 1.68 0 2.74 1.03 4.14 1.03 1.35 0 2.17-1.03 4.14-1.03 1.36 0 2.79.74 3.81 2.02-3.35 1.83-2.81 6.6.58 7.81z"/></svg>Apple</button>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section id="onboard" class="screen">
+  <div class="onboard scroll">
+    <div class="ob-head">
+      <button class="ob-back hidden" id="obBackBtn" onclick="obBack()">←</button>
+      <div class="ob-dots"><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
+      <button class="ghost ob-skip" onclick="go('discover')">Overslaan</button>
+    </div>
+    <div class="ob-steps">
+      <div class="ob-step active">
+        <h1 class="ob-title">Wat is je woningcorporatie?</h1>
+        <p class="ob-copy">We controleren of je corporatie is aangesloten bij Ruilmijnwoning.</p>
+        <input class="ob-search" placeholder="Zoek je corporatie" oninput="obFilterCorp(this.value)">
+        <div class="ob-options" id="obCorpList">
+          <button class="choice selected" onclick="obSelect(this)"><span>Ymere</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>De Alliantie</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Vestia</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Woonstad Rotterdam</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Portaal</span><span class="check">✓</span></button>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Wat is je adres?</h1>
+        <p class="ob-copy">Deze gegevens gebruiken we om je woning veilig te koppelen. Vul dit zorgvuldig in, dit kan later niet meer worden aangepast.</p>
+        <div class="field"><label>Postcode</label><input placeholder="1234 AB"></div>
+        <div class="ob-fields two" style="margin-top:14px">
+          <div class="field"><label>Huisnummer</label><input placeholder="12"></div>
+          <div class="field"><label>Toevoeging</label><input placeholder="A (optioneel)"></div>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Hoe groot is je huidige woning?</h1>
+        <p class="ob-copy">Vul de oppervlakte en het aantal kamers van je woning in.</p>
+        <p class="ls-stepper-label">Woonoppervlakte</p>
+        <div class="ls-stepper"><button class="ls-step-btn" onclick="obAdjustNum('surface',-5,10)">−</button><div class="ls-step-value"><b id="obVal_surface">75</b><span>m²</span></div><button class="ls-step-btn" onclick="obAdjustNum('surface',5,10)">+</button></div>
+        <p class="ls-stepper-label">Aantal kamers</p>
+        <div class="ls-stepper"><button class="ls-step-btn" onclick="obAdjustNum('rooms',-1,1)">−</button><div class="ls-step-value"><b id="obVal_rooms">3</b><span>kamers</span></div><button class="ls-step-btn" onclick="obAdjustNum('rooms',1,1)">+</button></div>
+        <button class="primary" style="margin-top:6px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Vertel ons meer over je woning</h1>
+        <p class="ob-copy">Kies je energielabel en het type woning.</p>
+        <p class="ls-stepper-label">Energielabel</p>
+        <div class="ls-chips" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+          <button class="ls-chip" onclick="obSelect(this)">A</button><button class="ls-chip selected" onclick="obSelect(this)">B</button><button class="ls-chip" onclick="obSelect(this)">C</button><button class="ls-chip" onclick="obSelect(this)">D</button>
+          <button class="ls-chip" onclick="obSelect(this)">E</button><button class="ls-chip" onclick="obSelect(this)">F</button><button class="ls-chip" onclick="obSelect(this)">G</button>
+        </div>
+        <p class="ls-stepper-label">Type woning</p>
+        <div class="ob-options">
+          <button class="choice selected" onclick="obSelect(this)"><span>Appartement</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Eengezinswoning</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Studio</span><span class="check">✓</span></button>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Wat betaal je nu?</h1>
+        <p class="ob-copy">Dit helpt ons je woning correct te waarderen.</p>
+        <div class="field"><label>Huurprijs per maand (€)</label><input placeholder="685"></div>
+        <div class="field" style="margin-top:14px"><label>Servicekosten per maand (€)</label><input placeholder="35 (optioneel)"></div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Wie ben je?</h1>
+        <p class="ob-copy">We gebruiken deze gegevens om je aanvraag te verwerken.</p>
+        <div class="ob-fields two"><div class="field"><label>Voornaam</label><input placeholder="Janine"></div><div class="field"><label>Achternaam</label><input placeholder="Koster"></div></div>
+        <div class="ob-fields two" style="margin-top:14px"><div class="field"><label>Geboortedatum</label><input type="date"></div><div class="field"><label>Telefoonnummer</label><input type="tel" placeholder="06 12345678"></div></div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Je huishouden</h1>
+        <p class="ob-copy">Dit bepaalt mede of je in aanmerking komt voor een woning.</p>
+        <p class="ls-stepper-label">Aantal gezinsleden</p>
+        <div class="ls-stepper"><button class="ls-step-btn" onclick="obAdjustNum('familySize',-1,1)">−</button><div class="ls-step-value"><b id="obVal_familySize">2</b><span>personen</span></div><button class="ls-step-btn" onclick="obAdjustNum('familySize',1,1)">+</button></div>
+        <div class="field" style="margin-top:6px"><label>Bruto jaarinkomen huishouden (€)</label><input placeholder="42.000"></div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Nog een paar korte vragen</h1>
+        <p class="ob-copy">Dit hebben we nodig om je aanvraag correct te beoordelen.</p>
+        <div class="yn-row"><span class="yn-label">Heb je een partner?</span><div class="yn-toggle"><button class="yn-btn selected" onclick="obSelect(this)">Ja</button><button class="yn-btn" onclick="obSelect(this)">Nee</button></div></div>
+        <div class="yn-row"><span class="yn-label">Heb je een bewindvoerder?</span><div class="yn-toggle"><button class="yn-btn" onclick="obSelect(this)">Ja</button><button class="yn-btn selected" onclick="obSelect(this)">Nee</button></div></div>
+        <div class="yn-row" style="border-bottom:0"><span class="yn-label">Ben je zelfstandig ondernemer?</span><div class="yn-toggle"><button class="yn-btn" onclick="obSelect(this)">Ja</button><button class="yn-btn selected" onclick="obSelect(this)">Nee</button></div></div>
+        <label class="terms-row" style="margin-top:18px"><input type="checkbox" checked><span>Ik heb de <a onclick="toast('Privacyverklaring geopend')" style="color:var(--blue);font-weight:700;cursor:pointer">privacyverklaring</a> gelezen en ga akkoord.</span></label>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Waar zou je willen wonen?</h1>
+        <p class="ob-copy">Selecteer een of meerdere gebieden waar je interesse in hebt.</p>
+        <div class="ob-options">
+          <button class="choice selected" onclick="obToggle(this)"><span>Amsterdam</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Rotterdam</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>Utrecht</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Den Haag</span><span class="check">✓</span></button>
+          <button class="ob-add" onclick="toast('Gebied toevoegen')">+ Voeg een gebied toe</button>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Wat zijn je woonwensen?</h1>
+        <p class="ob-copy">Straal, prijsklasse en minimaal aantal kamers.</p>
+        <p class="ls-stepper-label">Straal rond je gekozen gebieden</p>
+        <div class="ls-chips" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px">
+          <button class="ls-chip" onclick="obSelect(this)">5 km</button><button class="ls-chip selected" onclick="obSelect(this)">10 km</button><button class="ls-chip" onclick="obSelect(this)">20 km</button><button class="ls-chip" onclick="obSelect(this)">50 km</button>
+        </div>
+        <p class="ls-stepper-label">Prijsklasse</p>
+        <div class="ob-options" style="margin-bottom:16px">
+          <button class="choice" onclick="obSelect(this)"><span>Tot €800</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obSelect(this)"><span>€800 – €1200</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>€1200 – €1600</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>€1600+</span><span class="check">✓</span></button>
+        </div>
+        <p class="ls-stepper-label">Minimaal aantal kamers</p>
+        <div class="ob-tiles">
+          <button class="ob-tile" onclick="obSelectTile(this)">1</button>
+          <button class="ob-tile selected" onclick="obSelectTile(this)">2</button>
+          <button class="ob-tile" onclick="obSelectTile(this)">3</button>
+          <button class="ob-tile" onclick="obSelectTile(this)">4+</button>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <h1 class="ob-title">Wat vind je belangrijk?</h1>
+        <p class="ob-copy">Kies de kenmerken die voor jou onmisbaar zijn.</p>
+        <div class="ob-options">
+          <button class="choice selected" onclick="obToggle(this)"><span>Balkon</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>Buitenruimte</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>OV in de buurt</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Begane grond</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Huisdiervriendelijk</span><span class="check">✓</span></button>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
+      </div>
+      <div class="ob-step">
+        <div class="ob-final">
+          <div class="ob-final-icon">✓</div>
+          <h1 class="ob-title" style="margin-top:0">Bijna zover.</h1>
+          <p class="ob-copy">Nog één stap: maak je advertentie aan zodat andere huurders je woning kunnen vinden.</p>
+          <button class="primary" onclick="obFinish()">Advertentie plaatsen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="listing" class="screen">
+  <div class="listing scroll">
+    <div class="ls-head">
+      <button class="ob-back hidden" id="lsBackBtn" onclick="lsBack()">←</button>
+      <div class="ob-dots"><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
+      <button class="ghost ob-skip" onclick="go('profile')">Sluiten</button>
+    </div>
+    <div class="ls-steps">
+      <div class="ls-step active">
+        <h1 class="ls-title">Jouw woning</h1>
+        <div class="ls-card">
+          <div class="ls-card-photo"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="">
+            <button class="ls-add-photo" onclick="toast('Foto upload geopend')">+ Foto's toevoegen</button>
+            <span class="ls-progress-badge" id="lsProgress">20%</span>
+          </div>
+          <div class="ls-card-body">
+            <div class="eyebrow">Jouw advertentie</div>
+            <h3>Amsterdam Noord</h3>
+            <div class="ls-card-price">€780 / maand</div>
+            <div class="ls-card-facts"><span class="fact" id="lsFactSize">68 m²</span><span class="fact" id="lsFactRooms">3 kamers</span><span class="fact">Energielabel B</span></div>
+          </div>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="lsNext()">Verder</button>
+      </div>
+      <div class="ls-step">
+        <h1 class="ls-title">Hoe groot is je woning?</h1>
+        <p class="ls-stepper-label">Woonoppervlak</p>
+        <div class="ls-stepper"><button class="ls-step-btn" onclick="lsAdjust('size',-2)">−</button><div class="ls-step-value"><b id="lsSize">68</b><span>m²</span></div><button class="ls-step-btn" onclick="lsAdjust('size',2)">+</button></div>
+        <p class="ls-stepper-label">Aantal kamers</p>
+        <div class="ls-stepper"><button class="ls-step-btn" onclick="lsAdjust('rooms',-1)">−</button><div class="ls-step-value"><b id="lsRooms">3</b><span>kamers</span></div><button class="ls-step-btn" onclick="lsAdjust('rooms',1)">+</button></div>
+        <button class="primary" style="margin-top:6px" onclick="lsNext()">Verder</button>
+      </div>
+      <div class="ls-step">
+        <h1 class="ls-title">Waar is je woning?</h1>
+        <div class="ls-map"><span class="ls-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span></div>
+        <div class="ls-map-label">Amsterdam Noord</div>
+        <button class="primary" style="margin-top:22px" onclick="lsNext()">Bevestig locatie</button>
+      </div>
+      <div class="ls-step">
+        <h1 class="ls-title">Wat is inbegrepen?</h1>
+        <p class="ob-copy" style="margin-bottom:14px">Kies alles wat van toepassing is op je woning.</p>
+        <div class="ls-chips">
+          <button class="ls-chip selected" onclick="lsToggleChip(this)">Balkon</button>
+          <button class="ls-chip" onclick="lsToggleChip(this)">Tuin</button>
+          <button class="ls-chip" onclick="lsToggleChip(this)">Lift</button>
+          <button class="ls-chip" onclick="lsToggleChip(this)">Berging</button>
+          <button class="ls-chip" onclick="lsToggleChip(this)">Parkeren</button>
+          <button class="ls-chip" onclick="lsToggleChip(this)">Huisdieren</button>
+          <button class="ls-chip selected" onclick="lsToggleChip(this)">OV in de buurt</button>
+        </div>
+        <button class="primary" style="margin-top:22px" onclick="lsNext()">Verder</button>
+      </div>
+      <div class="ls-step">
+        <h1 class="ls-title">Zo ziet je advertentie eruit</h1>
+        <div class="ls-preview-card">
+          <div class="ls-preview-photo"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt=""></div>
+          <div class="ls-preview-body">
+            <h3>Amsterdam Noord</h3>
+            <div class="ls-preview-price" id="lsPreviewMeta">€780 · 68 m² · 3 kamers</div>
+            <div class="ls-preview-meta">Energielabel B<br>De Alliantie</div>
+            <span class="ls-badge">Jouw advertentie</span>
+          </div>
+        </div>
+        <button class="primary ls-publish" onclick="lsPublish()">Advertentie publiceren</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="discover" class="screen">
+  <div class="top"><div class="brand"><img src="logo-icon.png" alt=""><div><b>ruil</b><span>mijnwoning</span></div></div><button class="iconbtn" aria-label="Filters instellen" title="Filters instellen" onclick="openFilters()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></button></div>
+  <div class="discover scroll">
+    <div class="discover-content">
+      <div class="deck" id="deck">
+        <div class="deck-card back" id="backCard"><div class="deck-image"><img id="backImg" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85"></div></div>
+        <div class="deck-card" id="mainCard">
+          <div class="deck-image">
+            <img id="deckImg" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85" alt="Woningfoto">
+            <button class="photo-tap left" aria-label="Vorige foto"></button>
+            <button class="photo-tap right" aria-label="Volgende foto"></button>
+            <div class="photo-dots" id="deckPhotoDots"></div>
+            <span class="swipe-label like" id="likeLabel" aria-hidden="true">Interesse</span>
+            <span class="swipe-label pass" id="passLabel" aria-hidden="true">Niet voor mij</span>
+            <div class="badge-row">
+              <span class="pill-match" id="deckMatchBadge">94% match</span>
+              <span class="pill-new" id="deckNewBadge">NIEUW!</span>
+            </div>
+            <button class="heart flag-btn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button>
+            <button class="heart" id="favBtn" aria-label="Bewaar woning" onclick="saveHome()">♡</button>
+            <div class="deck-overlay-info">
+              <span class="pill-liked liked-above-title" id="deckLikedBadge">♥ Vond jouw woning leuk</span>
+              <div class="deck-head-row">
+                <h3 id="deckTitle">Weesperzijde 84</h3>
+                <div class="price" id="deckPrice">€685 / mnd</div>
+              </div>
+              <div class="deck-sub-row">
+                <div class="sub-loc" id="deckSub">Amsterdam-Oost · Ymere Woningbouw (DAEB)</div>
+                <button class="info-pill" type="button" onclick="toast('De huurprijs kan nog wijzigen')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg> Prijs voorbehoud</button>
+              </div>
+              <div class="deck-meta-icons" id="deckFacts"></div>
+            </div>
+          </div>
+        </div>
+        <div class="deck-card deck-empty" id="deckEmpty">
+          <div class="deck-empty-inner">
+            <div class="deck-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="38" height="38"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
+            <h3>Je hebt alle woningen gezien</h3>
+            <p class="small muted">Pas je filters aan om meer opties te zien, of begin opnieuw.</p>
+            <button class="primary" onclick="openFilters()">Filters aanpassen</button>
+            <button class="secondary" onclick="resetDeck()">Toon opnieuw</button>
+          </div>
+        </div>
+      </div>
+      <div class="action-bar" role="group" aria-label="Swipe acties">
+        <button class="ab-btn ab-undo" id="undoBtn" aria-label="Ongedaan maken" onclick="undoSwipe()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></button>
+        <button class="ab-btn ab-dislike" aria-label="Niet interessant" onclick="skipHome()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <button class="ab-btn ab-fav" id="starBtn" aria-label="Bewaar woning" onclick="saveHome()"><svg id="starIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M12 3.5l2.6 5.6 6.1.6-4.6 4.1 1.4 6-5.5-3.4-5.5 3.4 1.4-6-4.6-4.1 6.1-.6z"/></svg></button>
+        <button class="ab-btn ab-like" aria-label="Interesse tonen" onclick="likeHome()"><svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom"><button class="nav active" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+</section>
+
+<section id="detail" class="screen">
+  <div class="detail scroll">
+    <div class="detail-img"><img id="detailImg" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1100&q=85" alt="Woningfoto"><button class="photo-tap left" aria-label="Vorige foto" onclick="detailPhoto(-1)"></button><button class="photo-tap right" aria-label="Volgende foto" onclick="detailPhoto(1)"></button><div class="photo-dots" id="detailPhotoDots"></div><button class="backbtn" onclick="closeDetail()">←</button><button class="heart detail-fav flag-btn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button><button class="heart detail-fav" id="detailFavBtn" aria-label="Bewaar woning" onclick="saveHome()">♡</button></div>
+    <div class="detail-body">
+      <div class="deck-head-row">
+        <h1 id="detailTitle">Weesperzijde 84</h1>
+        <div class="price" id="detailPrice">€685 / mnd</div>
+      </div>
+      <div class="deck-sub-row">
+        <div class="sub-loc" id="detailSub">Amsterdam-Oost</div>
+        <button class="info-pill" type="button" onclick="toast('De huurprijs kan nog wijzigen')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg> Prijs voorbehoud</button>
+      </div>
+      <div class="badge-row static-row">
+        <span class="pill-match" id="detailMatchBadge">94% match</span>
+        <span class="pill-liked" id="detailLikedBadge">♥ Vond jouw woning leuk</span>
+      </div>
+      <div class="deck-meta-icons" id="detailFacts"></div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg></span><h3>Omschrijving</h3></div>
+        <p class="detail-desc" id="detailDesc">Beschrijving volgt.</p>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 11h6M9 15h4"/></svg></span><h3>Overzicht</h3></div>
+        <div class="info-row"><span class="info-icon">€</span><div><div class="info-label">Huurprijs</div><div class="info-value" id="ovHuur">€685</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span><div><div class="info-label">Servicekosten</div><div class="info-value" id="ovService">€35</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Aantal kamers</div><div class="info-value" id="ovRooms">3</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Bouwjaar</div><div class="info-value" id="ovYear">2013</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><div><div class="info-label">Energielabel</div><div class="info-value" id="ovEnergy">A</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><div><div class="info-label">Oppervlakte</div><div class="info-value" id="ovSize">78 m²</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Min. bewoners</div><div class="info-value" id="ovMinOcc">Niet gespecificeerd</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Max. bewoners</div><div class="info-value" id="ovMaxOcc">Niet gespecificeerd</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><div class="info-label">Ligging</div><div class="info-value" id="ovLigging">Niet gespecificeerd</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Min. leeftijd</div><div class="info-value" id="ovMinAge">Niet gespecificeerd</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.5 3H4a1 1 0 0 0-1 1v5.5a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83z"/><circle cx="7.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/></svg></span><div><div class="info-label">Woninglabel</div><div class="info-value" id="ovLabel">Niet gespecificeerd</div></div></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><h3>Locatie</h3></div>
+        <div class="ls-map"><span class="ls-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span></div>
+        <div class="ls-map-label" id="ovCity">Amsterdam-Oost</div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 11l2 2 4-4"/></svg></span><h3>Woonwensen van deze huurder</h3></div>
+        <div class="info-row"><span class="info-icon">€</span><div><div class="info-label">Huurprijs</div><div class="info-value" id="wwPrice">€ 0 - 1000</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><div class="info-label">Plaats</div><div class="info-value" id="wwCity">Amsterdam</div></div></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Minimaal aantal kamers</div><div class="info-value" id="wwRooms">2 kamers</div></div></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span><h3>Voorzieningen</h3></div>
+        <div id="detailAmenities"></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span><h3>Verhuurder</h3></div>
+        <div class="landlord-row"><span id="detailLandlord">Ymere Woningbouw (DAEB)</span><span class="verified-pill">✓ Geverifieerd</span></div>
+      </div>
+
+      <div style="height:6px"></div>
+      <button class="primary" style="width:100%" onclick="likeHome()">Ik heb interesse</button>
+      <div style="height:8px"></div>
+      <button class="secondary" style="width:100%" onclick="saveHome()">Bewaar woning</button>
+    </div>
+  </div>
+</section>
+
+<section id="match" class="screen">
+ <div class="matchscreen scroll">
+   <div class="matchtop"><button class="iconbtn" style="background:#ffffff12;color:#fff;border-color:#334155" onclick="go('discover')">×</button></div>
+   <div class="celebrate"><div class="spark"><svg viewBox="0 0 24 24" fill="currentColor" width="45" height="45"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div><h1>Jullie hebben een match!</h1><p class="muted" style="color:#cbd5e1;line-height:1.6;font-size:13px">Jij en Sophie hebben allebei interesse. Bekijk de woningen, start een gesprek en ontdek of de ruil werkt.</p>
+    <div class="homes"><div class="home-card"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=700&q=85"></div><div class="home-card"><img src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=700&q=85"></div><div class="swap">⇄</div></div>
+    <div class="match-actions"><button class="primary" onclick="go('chat')">Start gesprek</button><button class="secondary" onclick="go('exchange')">Bekijk ruilproces</button></div>
+   </div>
+ </div>
+</section>
+
+<section id="messages" class="screen">
+ <div class="messages scroll">
+  <div class="top"><div class="brand"><img src="logo-icon.png" alt=""><div><b>ruil</b><span>mijnwoning</span></div></div><span style="width:38px"></span></div>
+  <div class="messages-body">
+   <div class="eyebrow" style="padding:0 20px;margin-top:14px">Gesprekken</div>
+   <div class="msg-row" onclick="go('chat')">
+    <div class="avatar">SJ</div>
+    <div class="msg-row-body">
+     <div class="msg-row-top"><b>Sophie Janssen</b><span class="msg-time">14:32</span></div>
+     <p class="msg-preview">Lijkt me goed. Ik heb mijn gegevens alvast gecontroleerd. Zullen we daarna samen de aanvraag bekijken?</p>
+    </div>
+    <span class="unread-dot"></span>
+   </div>
+  </div>
+ </div>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav active" onclick="go('messages')"><span class="ico">◌</span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+</section>
+
+<section id="chat" class="screen">
+ <div class="chat">
+  <div class="chatbar"><button class="ghost" onclick="go('messages')">←</button><div class="avatar">SJ</div><div style="flex:1"><b style="font-size:13px">Sophie Janssen</b><div class="tiny muted">Amsterdam-Oost · Ymere</div></div><button class="iconbtn" onclick="go('exchange')">⇄</button></div>
+  <div class="chatbody scroll"><div class="milestone">Vandaag · Ruilmatch geaccepteerd door beide partijen</div><div class="bubble them">Hoi! Wat een mooie woning heb je. Zullen we zaterdag even bellen om de woningruil te bespreken?</div><div class="bubble me">Hoi Sophie! Jazeker. We zijn vooral benieuwd of de locatie en voorwaarden voor ons allebei goed uitpakken.</div><div class="bubble them">Lijkt me goed. Ik heb mijn gegevens alvast gecontroleerd. Zullen we daarna samen de aanvraag bekijken?</div><div class="milestone">Volgende stap · Samen de aanvraag voorbereiden</div></div>
+  <div class="composer"><input placeholder="Schrijf een bericht…" id="msg"><button onclick="sendMsg()">↑</button></div>
+ </div>
+</section>
+
+<section id="exchange" class="screen">
+ <div class="exchange scroll">
+  <div class="exchange-head"><button class="ghost" onclick="go('discover')">←</button><div style="height:12px"></div><div class="eyebrow">Jouw woningruil</div><h1 style="font-size:28px;letter-spacing:-.035em;margin-top:5px">Weesperzijde ⇄ Utrecht</h1><p class="small muted" style="margin-top:6px">Sophie Janssen · Ymere</p><div style="height:12px"></div><span class="status">● Match bevestigd</span></div>
+  <div class="timeline">
+   <div class="timeline-card done"><div class="dot">✓</div><div><h3>Ruilmatch bevestigd</h3><p>Beide huurders hebben interesse bevestigd.</p></div></div>
+   <div class="timeline-card done"><div class="dot">✓</div><div><h3>Instemming woningruil</h3><p>De basisgegevens zijn gecontroleerd.</p></div></div>
+   <div class="timeline-card current"><div class="dot">3</div><div><h3>Aanvraag indienen</h3><p>Upload de benodigde documenten en dien de aanvraag in.</p><button class="primary" style="padding:10px 12px;border-radius:12px;font-size:11px;margin-top:10px" onclick="toast('Document upload geopend')">Documenten uploaden</button></div></div>
+   <div class="timeline-card"><div class="dot">4</div><div><h3>Goedkeuring corporaties</h3><p>De betrokken corporaties beoordelen de aanvraag.</p></div></div>
+   <div class="timeline-card"><div class="dot">5</div><div><h3>Sleuteloverdracht</h3><p>Na goedkeuring kunnen de laatste afspraken worden afgerond.</p></div></div>
+  </div>
+ </div>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav active dossier-nav-btn" onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+</section>
+
+<section id="saved" class="screen">
+ <div class="saved scroll">
+  <div class="saved-top">
+   <button class="iconbtn" onclick="go('discover')">←</button>
+   <h2>Likes &amp; Favorieten</h2>
+   <button class="saved-req-pill" id="savedReqPill" onclick="setSavedTab('requests')">0 verzoeken</button>
+  </div>
+  <div class="saved-tabs" role="tablist">
+   <button class="active" data-tab="requests" onclick="setSavedTab('requests')">Verzoeken <span class="saved-count" id="savedCountRequests">0</span></button>
+   <button data-tab="favorites" onclick="setSavedTab('favorites')">Favorieten <span class="saved-count" id="savedCountFavorites">0</span></button>
+   <button data-tab="likes" onclick="setSavedTab('likes')">Likes <span class="saved-count" id="savedCountLikes">0</span></button>
+  </div>
+  <div class="saved-list" id="savedList"></div>
+ </div>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav active" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+</section>
+
+<section id="profile" class="screen">
+ <div class="profile scroll">
+  <div class="top"><div class="brand"><img src="logo-icon.png" alt=""><div><b>ruil</b><span>mijnwoning</span></div></div><button class="iconbtn" onclick="go('settings')">⚙</button></div>
+  <div class="profile-body">
+   <div class="eyebrow">Mijn woning</div><h1 style="font-size:28px;letter-spacing:-.035em;margin-top:4px">Utrecht · Oog in Al</h1><p class="small muted" style="margin-top:5px">€685 / maand · 4 kamers · 98 m²</p>
+   <div class="card profile-home" style="margin-top:15px"><img class="home-img" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85"><div class="p"><b>Je advertentie is actief</b><p class="tiny muted" style="margin-top:4px">Je woning wordt getoond aan passende ruilers.</p></div></div>
+   <div class="card verify" style="padding:0 15px"><div class="verify-row"><span>Adres</span><span class="ok">✓ Geverifieerd</span></div><div class="verify-row"><span>Woninggegevens</span><span class="ok">✓ Geverifieerd</span></div><div class="verify-row"><span>Corporatie</span><span class="ok">✓ Gekoppeld</span></div><div class="verify-row"><span>Zoekprofiel</span><span class="ok">✓ Compleet</span></div></div>
+   <div style="height:12px"></div><button class="primary" style="width:100%" onclick="go('listing');lsGoTo(0)">Advertentie bewerken</button>
+   <div style="height:10px"></div><button class="secondary" style="width:100%" onclick="go('onboard');obGoTo(0)">Woonwensen aanpassen</button>
+  </div>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav active" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+ </div>
+</section>
+
+<section id="settings" class="screen">
+ <div class="profile scroll">
+  <div class="top"><button class="ghost" onclick="go('profile')">← Terug</button><b style="font-size:15px">Instellingen</b><span style="width:34px"></span></div>
+  <div class="profile-body">
+   <div class="eyebrow">Account</div>
+   <div class="card verify" style="padding:0 15px;margin-top:10px">
+    <div class="verify-row"><span>Naam</span><span class="muted">Janine Koster</span></div>
+    <div class="verify-row"><span>E-mailadres</span><span class="muted">janine@email.nl</span></div>
+    <div class="verify-row" style="border-bottom:0"><span>Telefoonnummer</span><span class="muted">06 12345678</span></div>
+   </div>
+   <button class="secondary" style="width:100%;margin-top:10px" onclick="toast('Profiel bewerken geopend')">Profiel bewerken</button>
+
+   <div class="eyebrow" style="margin-top:22px">Voorkeuren</div>
+   <div class="card verify" style="padding:0 15px;margin-top:10px">
+    <div class="settings-row"><span>Pushmeldingen</span><button class="switch on" onclick="toggleSwitch(this)"><i></i></button></div>
+    <div class="settings-row"><span>E-mailupdates</span><button class="switch on" onclick="toggleSwitch(this)"><i></i></button></div>
+    <div class="settings-row"><span>Geluid bij nieuwe matches</span><button class="switch" onclick="toggleSwitch(this)"><i></i></button></div>
+   </div>
+
+   <div class="eyebrow" style="margin-top:22px">Privacy &amp; beveiliging</div>
+   <div class="card verify" style="padding:0 15px;margin-top:10px">
+    <div class="verify-row settings-link" onclick="toast('Wachtwoord wijzigen geopend')"><span>Wachtwoord wijzigen</span><span class="muted">›</span></div>
+    <div class="verify-row settings-link" onclick="toast('Privacyverklaring geopend')"><span>Privacyverklaring</span><span class="muted">›</span></div>
+    <div class="verify-row settings-link" style="border-bottom:0" onclick="toast('Gebruiksvoorwaarden geopend')"><span>Gebruiksvoorwaarden</span><span class="muted">›</span></div>
+   </div>
+
+   <div style="height:22px"></div>
+   <button class="secondary" style="width:100%;color:var(--red);border-color:#fecaca" onclick="toast('Je bent uitgelogd')">Uitloggen</button>
+   <div style="height:10px"></div>
+   <button class="ghost" style="width:100%;color:var(--red)" onclick="toast('Accountverwijdering aangevraagd')">Account verwijderen</button>
+  </div>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+ </div>
+</section>
+
+<div id="filterModal" class="modal-overlay">
+  <div class="filter-sheet">
+    <div class="filter-head">
+      <h3>Zoekfilters &amp; Woonwensen</h3>
+      <button class="iconbtn" onclick="closeFilters()">✕</button>
+    </div>
+    <div class="filter-body scroll">
+      <div>
+        <p class="filter-label">Zoekmethode</p>
+        <div class="seg-toggle">
+          <button class="active" onclick="setSearchMethod(this,'mine')">Mijn Wensen</button>
+          <button onclick="setSearchMethod(this,'theirs')">Hun Wensen</button>
+        </div>
+        <p class="filter-hint" id="searchMethodHint">Vind woningen die passen bij jouw wensen.</p>
+      </div>
+      <div>
+        <p class="filter-label">Locatie</p>
+        <div class="filter-location"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><input placeholder="Zoek stad..."><span>⌄</span></div>
+      </div>
+      <div>
+        <p class="filter-label">Straal (km)</p>
+        <div class="radius-row"><span class="radius-pill" id="radiusVal">0 km</span><span class="tiny muted" id="radiusHint">Selecteer eerst een stad</span></div>
+        <input type="range" min="0" max="50" value="0" class="filter-slider" id="radiusSlider" oninput="updateRadius(this.value)">
+      </div>
+      <div>
+        <p class="filter-label">Prijsklasse</p>
+        <div class="price-range"><input class="price-input" id="priceMin" value="€ 400"><span class="muted">—</span><input class="price-input" id="priceMax" value="€ 950"></div>
+      </div>
+      <div>
+        <p class="filter-label">Minimaal aantal kamers</p>
+        <div class="rooms-row">
+          <button class="room-pill" onclick="selectRoom(this)">1+</button>
+          <button class="room-pill selected" onclick="selectRoom(this)">2+</button>
+          <button class="room-pill" onclick="selectRoom(this)">3+</button>
+          <button class="room-pill" onclick="selectRoom(this)">4+</button>
+          <button class="room-pill" onclick="selectRoom(this)">5+</button>
+        </div>
+      </div>
+      <div>
+        <p class="filter-label">Type woning</p>
+        <div class="radio-list">
+          <label class="radio-row">Benedenwoning<input type="radio" name="homeType"></label>
+          <label class="radio-row">Bovenwoning<input type="radio" name="homeType"></label>
+          <label class="radio-row">Corridorflat<input type="radio" name="homeType"></label>
+          <label class="radio-row">Eindwoning<input type="radio" name="homeType"></label>
+          <label class="radio-row">Galerijflat<input type="radio" name="homeType"></label>
+          <label class="radio-row">Geschakelde Twee-onder-een-kapwoning<input type="radio" name="homeType"></label>
+          <label class="radio-row">Geschakelde woning<input type="radio" name="homeType"></label>
+          <label class="radio-row">Half vrijstaande woning<input type="radio" name="homeType"></label>
+          <label class="radio-row">Portiekflat<input type="radio" name="homeType"></label>
+          <label class="radio-row">Tussenwoning<input type="radio" name="homeType"></label>
+          <label class="radio-row">Vrijstaande woning<input type="radio" name="homeType"></label>
+        </div>
+      </div>
+    </div>
+    <div class="filter-footer">
+      <button class="primary" style="width:100%;border-radius:16px" onclick="applyFilters()">⌕ Toon Resultaten</button>
+      <button class="reset-btn" onclick="resetFilters()">↺ Filters Resetten</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+const screens=[...document.querySelectorAll('.screen')];
+function go(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>e.classList.remove('show'),1800)}
+function setAuth(mode){
+ authMode=mode;
+ const isLogin=mode==='login';
+ document.getElementById('loginTab').classList.toggle('active',isLogin);
+ document.getElementById('registerTab').classList.toggle('active',!isLogin);
+ document.getElementById('authTitle').textContent=isLogin?'Welkom terug':'Account aanmaken';
+ document.getElementById('authSub').textContent=isLogin?'Log in op je account om verder te gaan.':'Meld je aan om te beginnen met woningruil';
+ document.getElementById('forgotLink').style.display=isLogin?'':'none';
+ document.getElementById('termsRow').style.display=isLogin?'none':'flex';
+ document.getElementById('authBtn').textContent=isLogin?'Inloggen & Doorgaan':'Registreren & Starten';
+ document.getElementById('authSwitch').innerHTML=isLogin?'Nog geen ruilaccount? <a onclick="setAuth(\'register\')">Registreer hier</a>':'Heb je al een account? <a onclick="setAuth(\'login\')">Inloggen</a>';
+}
+let authMode='login';
+function authContinue(){const email=document.getElementById('email').value;if(!email){toast('Vul eerst je e-mailadres in');return}if(authMode==='login'){go('discover')}else{go('onboard');obGoTo(0)}}
+let obIndex=0;
+function obGoTo(i){
+ document.querySelectorAll('#onboard .ob-step').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+ document.querySelectorAll('#onboard .ob-dot').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+ document.getElementById('obBackBtn').classList.toggle('hidden',i===0);
+ obIndex=i;
+}
+function obNext(){if(obIndex<11)obGoTo(obIndex+1);else obFinish()}
+function obBack(){if(obIndex>0)obGoTo(obIndex-1)}
+function obSelect(el){[...el.parentElement.children].forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+function obToggle(el){el.classList.toggle('selected')}
+function obSelectTile(el){[...el.parentElement.children].forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+const obNum={surface:75,rooms:3,familySize:2};
+function obAdjustNum(key,delta,min){obNum[key]=Math.max(min,obNum[key]+delta);document.getElementById('obVal_'+key).textContent=obNum[key]}
+function obFilterCorp(q){q=q.toLowerCase();document.querySelectorAll('#obCorpList .choice').forEach(el=>{el.style.display=el.textContent.toLowerCase().includes(q)?'':'none'})}
+let lsFromOnboarding=false;
+function obFinish(){lsFromOnboarding=true;go('listing');lsGoTo(0)}
+const lsState={size:68,rooms:3};
+let lsIndex=0;
+function lsGoTo(i){
+ document.querySelectorAll('#listing .ls-step').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+ document.querySelectorAll('#listing .ob-dot').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+ document.getElementById('lsBackBtn').classList.toggle('hidden',i===0);
+ document.getElementById('lsProgress').textContent=((i+1)*20)+'%';
+ lsIndex=i;
+}
+function lsNext(){if(lsIndex<4)lsGoTo(lsIndex+1);else lsPublish()}
+function lsBack(){if(lsIndex>0)lsGoTo(lsIndex-1)}
+function lsAdjust(key,delta){
+ const min=key==='size'?20:1;
+ lsState[key]=Math.max(min,lsState[key]+delta);
+ document.getElementById(key==='size'?'lsSize':'lsRooms').textContent=lsState[key];
+ document.getElementById('lsFactSize').textContent=lsState.size+' m²';
+ document.getElementById('lsFactRooms').textContent=lsState.rooms+' kamers';
+ document.getElementById('lsPreviewMeta').textContent=`€780 · ${lsState.size} m² · ${lsState.rooms} kamers`;
+}
+function lsToggleChip(el){el.classList.toggle('selected')}
+function lsPublish(){
+ toast(lsFromOnboarding?'Profiel compleet! Welkom bij Ruilmijnwoning':'Advertentie gepubliceerd ♡');
+ const dest=lsFromOnboarding?'discover':'profile';
+ lsFromOnboarding=false;
+ setTimeout(()=>go(dest),400);
+}
+const PROPERTIES=[
+ {id:'p1',title:'Weesperzijde 84',price:'€685 / mnd',sub:'Amsterdam-Oost',landlord:'Ymere Woningbouw (DAEB)',img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=900&q=85'],facts:['3 kamers','78 m²','Balkon'],energy:'A',match:94,isNew:true,mutual:true,favorited:false,serviceCosts:'€35',year:'2013',ligging:'Aan de rand van het centrum',wishes:{price:'€ 0 - 1000',city:'Amsterdam',rooms:'2 kamers'},desc:'Lichte, ruime woning met veel bergruimte en een eigen balkon op het zuiden. Rustig gelegen aan de rand van Amsterdam-Oost, op loopafstand van winkels, park en openbaar vervoer.',amenities:['Balkon','Energielabel A','Berging','Lift','Parkeren op aanvraag']},
+ {id:'p2',title:'Overtoom 210',price:'€745 / mnd',sub:'Amsterdam-West',landlord:'De Alliantie',img:'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=900&q=85'],facts:['2 kamers','64 m²','Tuin'],energy:'B',match:88,isNew:false,mutual:false,favorited:false,serviceCosts:'€28',year:'1998',ligging:'Rustige woonwijk',wishes:{price:'€ 0 - 900',city:'Amsterdam',rooms:'2 kamers'},desc:'Karakteristieke woning met een zonnige achtertuin, dicht bij het Vondelpark en het Overtoom winkelgebied.',amenities:['Tuin','Energielabel B','Berging']},
+ {id:'p3',title:'Utrechtsestraat 12',price:'€810 / mnd',sub:'Amsterdam-Centrum',landlord:'Woonstad Rotterdam',img:'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=85'],facts:['3 kamers','70 m²','Lift'],energy:'C',match:81,isNew:true,mutual:false,favorited:false,serviceCosts:'€42',year:'2005',ligging:'Centraal, dicht bij winkels',wishes:{price:'€ 0 - 1100',city:'Amsterdam',rooms:'3 kamers'},desc:'Centraal gelegen appartement met lift, vlakbij de Utrechtsestraat met al zijn winkels en horeca.',amenities:['Lift','Energielabel C']},
+ {id:'p4',title:'Javastraat 55',price:'€690 / mnd',sub:'Amsterdam-Oost',landlord:'Ymere Woningbouw (DAEB)',img:'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=900&q=85'],facts:['4 kamers','92 m²','Balkon'],energy:'B',match:90,isNew:false,mutual:true,favorited:false,serviceCosts:'€39',year:'2016',ligging:'Rustige zijstraat',wishes:{price:'€ 0 - 1000',city:'Amsterdam',rooms:'4 kamers'},desc:'Ruime gezinswoning met vier kamers en een balkon aan de rustige zijde van het gebouw.',amenities:['Balkon','Energielabel B','Berging','Parkeren']},
+ {id:'p5',title:'Bos en Lommerweg 8',price:'€715 / mnd',sub:'Amsterdam-West',landlord:'Rochdale',img:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=85'],facts:['2 kamers','58 m²','Berging'],energy:'D',match:76,isNew:false,mutual:false,favorited:false,serviceCosts:'€25',year:'1985',ligging:'Nabij park',wishes:{price:'€ 0 - 950',city:'Amsterdam',rooms:'2 kamers'},desc:'Compacte en instapklare woning met eigen berging, op steenworp afstand van het Bos en Lommerplantsoen.',amenities:['Berging','Energielabel D']},
+ {id:'p6',title:'Nieuwe Achtergracht 21',price:'€825 / mnd',sub:'Amsterdam-Centrum',landlord:'Stadgenoot',img:'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=900&q=85'],facts:['3 kamers','74 m²','Balkon'],energy:'B',match:85,isNew:true,mutual:true,favorited:false,serviceCosts:'€33',year:'2009',ligging:'Aan de gracht, centraal',wishes:{price:'€ 0 - 1050',city:'Amsterdam',rooms:'3 kamers'},desc:'Sfeervol appartement direct aan de gracht, met veel lichtinval en een klein balkon aan het water.',amenities:['Balkon','Energielabel B','Lift']},
+ {id:'p7',title:'Van der Pekstraat 33',price:'€670 / mnd',sub:'Amsterdam-Noord',landlord:'Ymere Woningbouw (DAEB)',img:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=900&q=85'],facts:['2 kamers','60 m²','Tuin'],energy:'C',match:79,isNew:false,mutual:false,favorited:false,serviceCosts:'€27',year:'2001',ligging:'Rustige straat nabij het IJ',wishes:{price:'€ 0 - 900',city:'Amsterdam',rooms:'2 kamers'},desc:'Gezellige woning op loopafstand van het pontje naar Centraal, met een zonnige achtertuin.',amenities:['Tuin','Energielabel C','Berging']},
+ {id:'p8',title:'Ceramplein 6',price:'€890 / mnd',sub:'Amsterdam-Oost',landlord:'De Alliantie',img:'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1616046229478-9901c5536a45?auto=format&fit=crop&w=900&q=85'],facts:['4 kamers','96 m²','Lift'],energy:'A',match:92,isNew:true,mutual:true,favorited:false,serviceCosts:'€45',year:'2018',ligging:'Nabij het Oostpark',wishes:{price:'€ 0 - 1150',city:'Amsterdam',rooms:'4 kamers'},desc:'Modern gezinsappartement in een energiezuinig gebouw, met lift en volop ruimte voor een gezin.',amenities:['Lift','Energielabel A','Balkon','Parkeren']},
+ {id:'p9',title:'Kinkerstraat 145',price:'€760 / mnd',sub:'Amsterdam-West',landlord:'Woonstad Rotterdam',img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=85'],facts:['3 kamers','72 m²','Balkon'],energy:'C',match:83,isNew:false,mutual:false,favorited:false,serviceCosts:'€31',year:'2004',ligging:'Levendige winkelstraat',wishes:{price:'€ 0 - 1000',city:'Amsterdam',rooms:'3 kamers'},desc:'Ruim appartement boven de bedrijvige Kinkerstraat, met balkon aan de rustige achterzijde.',amenities:['Balkon','Energielabel C','Berging']},
+ {id:'p10',title:'Diemerparklaan 4',price:'€705 / mnd',sub:'Diemen',landlord:'Rochdale',img:'https://images.unsplash.com/photo-1505692794403-34d4982f88aa?auto=format&fit=crop&w=900&q=85',images:['https://images.unsplash.com/photo-1505692794403-34d4982f88aa?auto=format&fit=crop&w=900&q=85','https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&w=900&q=85'],facts:['2 kamers','62 m²','Tuin'],energy:'B',match:87,isNew:false,mutual:true,favorited:false,serviceCosts:'€29',year:'2012',ligging:'Grenzend aan het Diemerpark',wishes:{price:'€ 0 - 950',city:'Amsterdam',rooms:'2 kamers'},desc:'Rustig gelegen woning direct naast het Diemerpark, ideaal voor wie van groen en ruimte houdt.',amenities:['Tuin','Energielabel B','Berging']}
+];
+const deckState={queue:PROPERTIES.map(p=>({...p})),history:[],photoIndex:0};
+const savedStore={favorites:{p2:true,p7:true},likes:{p3:true,p9:true},dismissedRequests:{}};
+let savedTab='requests';
+let hasMatch=false;
+function unlockDossier(){
+ if(hasMatch)return;
+ hasMatch=true;
+ document.querySelectorAll('.dossier-nav-btn').forEach(b=>b.disabled=false);
+}
+let detailItem=null;
+let detailReturnScreen='discover';
+function findProperty(id){return PROPERTIES.find(p=>p.id===id)}
+function savedListFor(tab){
+ if(tab==='requests')return PROPERTIES.filter(p=>p.mutual&&!savedStore.dismissedRequests[p.id]);
+ if(tab==='favorites')return PROPERTIES.filter(p=>savedStore.favorites[p.id]);
+ return PROPERTIES.filter(p=>savedStore.likes[p.id]);
+}
+function openSaved(){setSavedTab(savedTab);go('saved')}
+function setSavedTab(tab){
+ savedTab=tab;
+ document.querySelectorAll('.saved-tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+ renderSaved();
+}
+function renderSaved(){
+ const reqCount=savedListFor('requests').length;
+ const favCount=savedListFor('favorites').length;
+ const likeCount=savedListFor('likes').length;
+ document.getElementById('savedCountRequests').textContent=reqCount;
+ document.getElementById('savedCountFavorites').textContent=favCount;
+ document.getElementById('savedCountLikes').textContent=likeCount;
+ const pill=document.getElementById('savedReqPill');
+ if(pill)pill.textContent=reqCount+' verzoeken';
+ const items=savedListFor(savedTab);
+ const list=document.getElementById('savedList');
+ if(!list)return;
+ if(!items.length){
+  list.innerHTML='<p class="saved-empty">Nog niets te zien in deze lijst.</p>';
+  return;
+ }
+ list.innerHTML=items.map(p=>`
+  <div class="saved-row">
+   <img class="saved-thumb" src="${p.img}" alt="">
+   <div class="saved-body">
+    <div class="saved-row-top"><h3>${p.title}</h3><div class="saved-price">${p.price.split(' / ')[0]}</div></div>
+    <div class="saved-row-bottom">
+     <div class="saved-sub">${p.sub} · ${p.facts[0]} · ${p.facts[1]}</div>
+     <div class="saved-actions">
+      ${savedTab==='requests'?`<button class="saved-thumb-btn up" aria-label="Accepteren" onclick="savedThumbUp('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg></button>`:''}
+      <button class="saved-thumb-btn down" aria-label="${savedTab==='requests'?'Afwijzen':'Verwijderen'}" onclick="savedThumbDown('${p.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3z"/><path d="M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg></button>
+     </div>
+    </div>
+   </div>
+  </div>
+ `).join('')+'<p class="saved-end">Einde van de lijst</p>';
+}
+function savedThumbUp(id){
+ const p=findProperty(id);if(!p)return;
+ if(savedTab==='requests'){
+  savedStore.dismissedRequests[id]=true;
+  renderSaved();
+  unlockDossier();
+  toast('Verzoek geaccepteerd ♥');
+  setTimeout(()=>go('match'),300);
+  return;
+ }
+ openDetailFor({...p,favorited:!!savedStore.favorites[p.id]},'saved');
+}
+function savedThumbDown(id){
+ if(savedTab==='requests'){savedStore.dismissedRequests[id]=true;toast('Verzoek geweigerd')}
+ else if(savedTab==='favorites'){savedStore.favorites[id]=false;toast('Verwijderd uit favorieten')}
+ else{savedStore.likes[id]=false;toast('Verwijderd uit likes')}
+ renderSaved();
+}
+let detailImages=[];
+let detailPhotoIndex=0;
+function itemImages(item){return item.images&&item.images.length?item.images:[item.img]}
+function renderPhotoDots(id,count,active){
+ const el=document.getElementById(id);if(!el)return;
+ el.innerHTML=count>1?Array.from({length:count},(_,i)=>`<span class="${i===active?'active':''}"></span>`).join(''):'';
+}
+function deckPhoto(dir){
+ const item=deckState.queue[0];if(!item)return;
+ const images=itemImages(item);if(images.length<=1)return;
+ deckState.photoIndex=(deckState.photoIndex+dir+images.length)%images.length;
+ document.getElementById('deckImg').src=images[deckState.photoIndex];
+ renderPhotoDots('deckPhotoDots',images.length,deckState.photoIndex);
+}
+function detailPhoto(dir){
+ if(detailImages.length<=1)return;
+ detailPhotoIndex=(detailPhotoIndex+dir+detailImages.length)%detailImages.length;
+ document.getElementById('detailImg').src=detailImages[detailPhotoIndex];
+ renderPhotoDots('detailPhotoDots',detailImages.length,detailPhotoIndex);
+}
+function trackEvent(name,label){console.log('[analytics]',name,label)}
+function reportListing(){
+ const item=deckState.queue[0];if(!item)return;
+ trackEvent('listing_reported',item.id);
+ toast('Advertentie gerapporteerd');
+}
+const ICON_BED='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg>';
+const ICON_EXPAND='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>';
+function factsIconsHtml(facts){return `<span class="meta-icon-item"><span class="ico">${ICON_BED}</span>${facts[0]}</span><span class="meta-icon-item"><span class="ico">${ICON_EXPAND}</span>${facts[1]}</span>`}
+function renderTopCard(){
+ const item=deckState.queue[0];
+ const card=document.getElementById('mainCard');
+ const empty=document.getElementById('deckEmpty');
+ const back=document.getElementById('backCard');
+ const undoBtn=document.getElementById('undoBtn');
+ if(undoBtn)undoBtn.disabled=deckState.history.length===0;
+ if(!item){
+  card.style.display='none';back.style.display='none';empty.style.display='flex';
+  trackEvent('deck_exhausted','filters');
+  return;
+ }
+ empty.style.display='none';card.style.display='';card.style.transition='none';card.style.transform='';card.style.opacity='1';
+ const images=itemImages(item);
+ deckState.photoIndex=0;
+ document.getElementById('deckImg').src=images[0];
+ renderPhotoDots('deckPhotoDots',images.length,0);
+ document.getElementById('deckMatchBadge').textContent=item.match+'% match';
+ const newBadge=document.getElementById('deckNewBadge');
+ if(newBadge)newBadge.style.display=item.isNew?'':'none';
+ const likedBadge=document.getElementById('deckLikedBadge');
+ if(likedBadge)likedBadge.style.display=item.mutual?'':'none';
+ document.getElementById('deckTitle').textContent=item.title;
+ document.getElementById('deckPrice').textContent=item.price;
+ document.getElementById('deckSub').textContent=item.sub+' · '+item.landlord;
+ document.getElementById('deckFacts').innerHTML=factsIconsHtml(item.facts);
+ const favBtn=document.getElementById('favBtn');
+ favBtn.textContent=item.favorited?'♥':'♡';
+ favBtn.classList.toggle('is-fav',item.favorited);
+ const starBtn=document.getElementById('starBtn');
+ if(starBtn)starBtn.classList.toggle('is-fav',item.favorited);
+ const next=deckState.queue[1];
+ if(next){back.style.display='';document.getElementById('backImg').src=next.img}else{back.style.display='none'}
+}
+function commitSwipe(direction,source){
+ const item=deckState.queue[0];if(!item)return;
+ const card=document.getElementById('mainCard');
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const dist=Math.round(window.innerWidth*1.2);
+ const sign=direction==='right'?1:-1;
+ card.style.transition=reduced?'opacity .2s ease':'transform .25s ease,opacity .25s ease';
+ card.style.transform=`translateX(${sign*dist}px) rotate(${reduced?0:sign*16}deg)`;
+ card.style.opacity='0';
+ trackEvent(direction==='right'?'swipe_like':'swipe_pass',item.id+' ('+source+')');
+ setTimeout(()=>{
+  deckState.queue.shift();
+  deckState.history=[{item,direction}];
+  renderTopCard();
+  if(direction==='right'){
+   savedStore.likes[item.id]=true;
+   if(item.mutual){unlockDossier();go('match')}else toast('Interesse verstuurd ♥');
+  }else{
+   toast('Niet voor mij');
+  }
+ },260);
+}
+function undoSwipe(){
+ const last=deckState.history.pop();if(!last)return;
+ deckState.queue.unshift(last.item);
+ trackEvent('swipe_undo',last.item.id);
+ toast('Ongedaan gemaakt');
+ renderTopCard();
+}
+function resetDeck(){
+ deckState.queue=PROPERTIES.map(p=>({...p}));
+ deckState.history=[];
+ renderTopCard();
+ toast('Deck opnieuw geladen');
+}
+function skipHome(){commitSwipe('left','button')}
+function saveHome(){
+ const onDetail=document.getElementById('detail').classList.contains('active');
+ const item=(onDetail&&detailItem)?detailItem:deckState.queue[0];
+ if(!item)return;
+ item.favorited=!item.favorited;
+ savedStore.favorites[item.id]=item.favorited;
+ trackEvent('swipe_favorite',item.id);
+ toast(item.favorited?'Opgeslagen':'Niet meer opgeslagen');
+ renderTopCard();
+ const starBtn=document.getElementById('starBtn');
+ if(starBtn){starBtn.classList.remove('pop');void starBtn.offsetWidth;starBtn.classList.add('pop')}
+ const detailFavBtn=document.getElementById('detailFavBtn');
+ if(detailFavBtn){detailFavBtn.textContent=item.favorited?'♥':'♡';detailFavBtn.classList.toggle('is-fav',item.favorited)}
+ if(document.getElementById('saved').classList.contains('active'))renderSaved();
+}
+function openDetail(){openDetailFor(deckState.queue[0],'discover')}
+function closeDetail(){go(detailReturnScreen)}
+function openDetailFor(item,returnScreen){
+ detailItem=item;
+ detailReturnScreen=returnScreen||'discover';
+ if(item){
+  trackEvent('card_expanded','property_'+item.id);
+  detailImages=itemImages(item);
+  detailPhotoIndex=0;
+  document.getElementById('detailImg').src=detailImages[0];
+  renderPhotoDots('detailPhotoDots',detailImages.length,0);
+  document.getElementById('detailMatchBadge').textContent=item.match+'% match';
+  const detailLikedBadge=document.getElementById('detailLikedBadge');
+  if(detailLikedBadge)detailLikedBadge.style.display=item.mutual?'':'none';
+  document.getElementById('detailTitle').textContent=item.title;
+  document.getElementById('detailPrice').textContent=item.price;
+  document.getElementById('detailSub').textContent=item.sub;
+  document.getElementById('detailFacts').innerHTML=factsIconsHtml(item.facts);
+  document.getElementById('detailDesc').textContent=item.desc;
+  document.getElementById('detailAmenities').innerHTML=item.amenities.map(a=>`<div class="amenity-row">• ${a}</div>`).join('');
+  document.getElementById('detailLandlord').textContent=item.landlord;
+  document.getElementById('ovHuur').textContent=item.price.split(' / ')[0];
+  document.getElementById('ovService').textContent=item.serviceCosts;
+  document.getElementById('ovRooms').textContent=(item.facts[0].match(/\d+/)||['-'])[0];
+  document.getElementById('ovYear').textContent=item.year;
+  document.getElementById('ovEnergy').textContent=item.energy;
+  document.getElementById('ovSize').textContent=item.facts[1];
+  document.getElementById('ovLigging').textContent=item.ligging;
+  document.getElementById('ovCity').textContent=item.sub;
+  document.getElementById('wwPrice').textContent=item.wishes.price;
+  document.getElementById('wwCity').textContent=item.wishes.city;
+  document.getElementById('wwRooms').textContent=item.wishes.rooms;
+  const detailFavBtn=document.getElementById('detailFavBtn');
+  if(detailFavBtn){detailFavBtn.textContent=item.favorited?'♥':'♡';detailFavBtn.classList.toggle('is-fav',item.favorited)}
+ }
+ go('detail');
+}
+function likeHome(){
+ const likeBtn=document.querySelector('.ab-like');
+ if(likeBtn){likeBtn.classList.remove('pulse');void likeBtn.offsetWidth;likeBtn.classList.add('pulse')}
+ if(document.getElementById('detail').classList.contains('active'))go('discover');
+ commitSwipe('right','button');
+}
+function sendMsg(){const i=document.getElementById('msg');if(i.value.trim()){const d=document.createElement('div');d.className='bubble me';d.textContent=i.value;document.querySelector('.chatbody').appendChild(d);i.value='';document.querySelector('.chatbody').scrollTop=99999}}
+obGoTo(0);
+lsGoTo(0);
+renderTopCard();
+renderSaved();
+setTimeout(()=>go('landing'),2200);
+</script>
+
+<script>
+(function(){
+ const c=document.getElementById('mainCard'); if(!c)return;
+ const likeLabel=document.getElementById('likeLabel'),passLabel=document.getElementById('passLabel');
+ let down=false,x0=0,y0=0,dx=0,dy=0,tapZone=null;
+ c.addEventListener('pointerdown',e=>{
+   const blockingBtn=e.target.closest('button')&&!e.target.closest('.photo-tap');
+   if(blockingBtn||!deckState.queue.length)return;
+   const zoneEl=e.target.closest('.photo-tap');
+   tapZone=zoneEl?(zoneEl.classList.contains('left')?'left':'right'):null;
+   down=true;x0=e.clientX;y0=e.clientY;dx=0;dy=0;c.setPointerCapture(e.pointerId);c.style.transition='none';
+ });
+ c.addEventListener('pointermove',e=>{
+   if(!down)return;
+   dx=e.clientX-x0;dy=e.clientY-y0;
+   c.style.transform=`translate(${dx}px,${dy*.15}px) rotate(${dx*.045}deg)`;
+   c.style.opacity=Math.max(.65,1-Math.abs(dx)/700);
+   if(likeLabel)likeLabel.style.opacity=Math.max(0,Math.min(1,dx/120));
+   if(passLabel)passLabel.style.opacity=Math.max(0,Math.min(1,-dx/120));
+ });
+ c.addEventListener('pointerup',e=>{
+   if(!down)return; down=false;
+   c.style.transition='';
+   if(likeLabel)likeLabel.style.opacity=0; if(passLabel)passLabel.style.opacity=0;
+   if(Math.abs(dx)>95){ commitSwipe(dx>0?'right':'left','gesture'); }
+   else if(Math.abs(dx)<8&&Math.abs(dy)<8){
+    c.style.transform='';c.style.opacity='1';
+    if(tapZone)deckPhoto(tapZone==='left'?-1:1);else openDetail();
+   }
+   else{ c.style.transform='';c.style.opacity='1'; }
+ });
+})();
+</script>
+
+<script>
+function openFilters(){document.getElementById('filterModal').classList.add('show')}
+function closeFilters(){document.getElementById('filterModal').classList.remove('show')}
+function setSearchMethod(el,mode){
+ [...el.parentElement.children].forEach(c=>c.classList.remove('active'));el.classList.add('active');
+ document.getElementById('searchMethodHint').textContent=mode==='mine'?'Vind woningen die passen bij jouw wensen.':'Vind huurders die op zoek zijn naar een woning zoals de jouwe.';
+}
+function updateRadius(v){
+ document.getElementById('radiusVal').textContent=v+' km';
+ document.getElementById('radiusHint').textContent=Number(v)>0?'':'Selecteer eerst een stad';
+}
+function selectRoom(el){[...el.parentElement.children].forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+function toggleSwitch(el){el.classList.toggle('on')}
+function applyFilters(){closeFilters();toast('Filters toegepast')}
+function resetFilters(){
+ document.querySelectorAll('#filterModal .room-pill').forEach((el,i)=>el.classList.toggle('selected',i===1));
+ document.querySelectorAll('#filterModal input[type=radio]').forEach(r=>r.checked=false);
+ document.getElementById('radiusSlider').value=0;updateRadius(0);
+ document.getElementById('priceMin').value='€ 400';document.getElementById('priceMax').value='€ 950';
+ setSearchMethod(document.querySelector('#filterModal .seg-toggle button'),'mine');
+ toast('Filters gereset');
+}
+</script>
+</body>
+</html>

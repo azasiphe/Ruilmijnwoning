@@ -13,20 +13,23 @@
 *{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#eef2f7}
 button,input,select{font:inherit} button{cursor:pointer}
 a{text-decoration:none;color:inherit}
-.app{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+.app{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:56px 28px 28px}
 .phone-shell{position:relative;width:min(430px,100%);height:min(860px,calc(100vh - 150px));min-height:720px}
-.phone-btn{position:absolute;background:linear-gradient(180deg,#3a3f47,#111318);border-radius:3px;z-index:5;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
-.phone-btn.mute{left:-3px;top:108px;width:3px;height:26px}
-.phone-btn.vol-up{left:-3px;top:152px;width:3px;height:50px}
-.phone-btn.vol-down{left:-3px;top:212px;width:3px;height:50px}
-.phone-btn.power{right:-3px;top:170px;width:3px;height:78px}
-.phone{width:100%;height:100%;background:#fff;border:10px solid #111827;border-radius:48px;box-shadow:0 30px 80px rgba(15,23,42,.28);overflow:hidden;position:relative}
-.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:132px;height:26px;background:#0b0d10;border-radius:0 0 16px 16px;z-index:1000}
-.phone::after{content:'';position:absolute;top:9px;left:calc(50% - 42px);width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3a4552,#0b0d10 70%);z-index:1001;pointer-events:none}
+.phone-btn{position:absolute;background:linear-gradient(180deg,#a9a6a0,#7c7a76);border-radius:3px;z-index:5;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.phone-btn.mute{left:-3px;top:98px;width:3px;height:24px}
+.phone-btn.vol-up{left:-3px;top:140px;width:3px;height:42px}
+.phone-btn.vol-down{left:-3px;top:190px;width:3px;height:42px}
+.phone-btn.power{right:-3px;top:150px;width:3px;height:96px}
+.phone-btn.cam-control{right:-3px;top:260px;width:3px;height:34px;border-radius:2px;background:linear-gradient(180deg,#c7c3bb,#8f8c86)}
+.phone{width:100%;height:100%;background:#fff;border:10px solid #86837e;border-radius:58px;box-shadow:0 30px 80px rgba(15,23,42,.28),inset 0 0 0 1.5px rgba(255,255,255,.35),inset 0 0 0 3px rgba(0,0,0,.12);overflow:hidden;position:relative}
+.phone::before{content:'';position:absolute;top:14px;left:50%;transform:translateX(-50%);width:126px;height:37px;background:#000;border-radius:999px;z-index:1000}
 .phone::after{content:'';position:absolute;inset:0;z-index:1001;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,0) 22%,rgba(255,255,255,0) 78%,rgba(255,255,255,.08) 100%)}
+.cam-dot{position:absolute;top:22px;left:calc(50% + 33px);width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#3a4552,#0b0d10 70%);z-index:1002;pointer-events:none}
 .screen{position:absolute;inset:0;background:#fff;display:none;flex-direction:column;overflow:hidden}
 .screen.active{display:flex}
-.scroll{overflow:auto;scrollbar-width:none}.scroll::-webkit-scrollbar{display:none}
+.scroll{overflow:auto}
+.scroll,.profile-body,.messages-body,.filter-body{scrollbar-width:none}
+.scroll::-webkit-scrollbar,.profile-body::-webkit-scrollbar,.messages-body::-webkit-scrollbar,.filter-body::-webkit-scrollbar{display:none}
 .top{padding:18px 20px 12px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);z-index:5}
 .brand{display:flex;align-items:center;gap:9px;font-size:15px}.brand img{width:27px;height:27px;object-fit:contain}.brand b{font-weight:800}.brand span{font-weight:500;color:#334155}
 .iconbtn{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;background:#fff;color:#334155;display:flex;align-items:center;justify-content:center}
@@ -35,7 +38,7 @@ a{text-decoration:none;color:inherit}
 .ghost{border:0;background:transparent;color:var(--muted);font-weight:600}
 .eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1e4fa3}
 h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .tiny{font-size:11px}.small{font-size:13px}.title{font-size:30px;line-height:1.08;letter-spacing:-.035em}
-.card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 8px 25px rgba(15,23,42,.05)}
+.card{background:#fff;border-radius:24px;box-shadow:0 6px 20px rgba(15,23,42,.05)}
 .home-img{width:100%;object-fit:cover;display:block}
 .field{display:flex;flex-direction:column;gap:7px;min-width:0}.field label{font-size:12px;font-weight:700;color:#475569}.field input,.field select{border:1px solid #dbe3ec;background:#f8fafc;border-radius:14px;padding:13px 14px;outline:none;width:100%;min-width:0}.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(50,118,207,.12)}
 .progress{height:6px;background:#e8eef6;border-radius:99px;overflow:hidden}.progress>i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:.3s}
@@ -140,8 +143,8 @@ h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .tiny{font-size:11px}.small{font-
 .deck{position:relative;flex:1;min-height:0}.deck-card{position:absolute;inset:0;background:#fff;border:1px solid var(--line);border-radius:29px;overflow:hidden;box-shadow:var(--shadow);transition:.35s}.deck-card.back{transform:scale(.95) translateY(12px);opacity:.6}.deck-image{height:100%;position:relative}.deck-image img{width:100%;height:100%;object-fit:cover}.match{position:absolute;left:14px;top:14px;background:#fff;border-radius:99px;padding:8px 11px;font-size:11px;font-weight:800;color:var(--blue);box-shadow:0 7px 20px rgba(0,0,0,.12)}.match.static{position:static;display:inline-block;margin:8px 0 0}.heart{position:absolute;right:14px;top:24px;width:39px;height:39px;border-radius:50%;background:rgba(255,255,255,.94);border:0;font-size:19px;color:#64748b;z-index:2}.heart.is-fav{color:var(--red)}.deck-info{padding:16px 17px}.deck-info h3{font-size:22px;letter-spacing:-.025em}.price{font-size:18px;font-weight:800;color:var(--blue);margin-top:4px}.facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.fact{background:#f1f5f9;border-radius:99px;padding:7px 9px;font-size:10px;font-weight:700;color:#475569}.why{margin-top:12px;font-size:11px;color:#475569;line-height:1.45}.actions{display:grid;grid-template-columns:52px 1fr 52px;gap:10px;margin-top:13px}.round{border:1px solid var(--line);background:#fff;border-radius:18px;font-size:20px}.interest{background:var(--blue);border:0;color:#fff;border-radius:18px;font-weight:800}
 .detail{overflow:auto;background:#fff}.detail-img{height:330px;position:relative}.detail-img img{width:100%;height:100%;object-fit:cover}.backbtn{position:absolute;left:15px;top:24px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;z-index:2}.detail-body{padding:20px}.detail-body h1{font-size:28px;letter-spacing:-.035em}.detail-body .sub{margin-top:5px;color:var(--muted);font-size:13px}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.metric{background:#f8fafc;border-radius:16px;padding:12px}.metric b{display:block;font-size:15px}.metric span{font-size:10px;color:#64748b}.matchbox{background:#eff6ff;border:1px solid #cfe2fb;border-radius:20px;padding:15px}.matchbox strong{color:#1e4fa3}.matchrow{display:flex;justify-content:space-between;font-size:11px;padding-top:9px}.matchrow b{color:#166534}
 .matchscreen{background:#0f172a;color:#fff;overflow:auto;flex:1;height:100%}.matchtop{padding:20px;display:flex;justify-content:flex-end}.celebrate{text-align:center;padding:22px 24px}.spark{font-size:45px}.matchscreen h1{font-size:32px;letter-spacing:-.04em;margin:12px 0}.homes{position:relative;height:250px;margin:20px auto;width:300px}.home-card{position:absolute;width:148px;height:205px;border:4px solid #fff;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.3)}.home-card img{width:100%;height:100%;object-fit:cover}.home-card:first-child{left:0;top:20px;transform:rotate(-6deg)}.home-card:nth-child(2){right:0;top:0;transform:rotate(6deg)}.swap{position:absolute;left:50%;top:97px;transform:translateX(-50%);background:var(--blue);width:55px;height:55px;border-radius:50%;display:grid;place-items:center;font-size:24px;border:4px solid #0f172a;z-index:2}.match-actions{display:grid;gap:9px}.match-actions .primary{background:#fff;color:#0f172a;box-shadow:none}.match-actions .secondary{background:transparent;color:#fff;border-color:#475569}
-.chat{background:#f8fafc;overflow:hidden}.chatbar{padding:12px 16px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:50%;background:#e6f0fc;color:#1e4fa3;display:grid;place-items:center;font-weight:800;font-size:12px}.chatbody{padding:16px;overflow:auto;display:flex;flex-direction:column;gap:11px}.bubble{max-width:78%;padding:11px 13px;border-radius:18px;font-size:12px;line-height:1.45}.them{background:#fff;border:1px solid var(--line);border-top-left-radius:6px}.me{background:var(--blue);color:#fff;align-self:flex-end;border-top-right-radius:6px}.milestone{background:#eff6ff;border:1px solid #d8e8fb;color:#1e4fa3;padding:9px 12px;border-radius:12px;text-align:center;font-size:10px;font-weight:700}.composer{margin-top:auto;padding:10px;background:#fff;border-top:1px solid var(--line);display:flex;gap:7px}.composer input{flex:1;border:1px solid var(--line);background:#f8fafc;border-radius:15px;padding:11px 13px}.composer button{width:43px;border:0;border-radius:14px;background:var(--blue);color:#fff}
-.messages{background:#f8fafc}.messages-body{padding-bottom:10px}
+.chat{background:#f8fafc;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:0}.chatbar{padding:calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:50%;background:#e6f0fc;color:#1e4fa3;display:grid;place-items:center;font-weight:800;font-size:12px}.chatbody{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;justify-content:flex-start;gap:12px}.bubble{max-width:78%;padding:11px 13px;border-radius:18px;font-size:12px;line-height:1.45}.them{background:#fff;border:1px solid var(--line);border-top-left-radius:6px}.me{background:var(--blue);color:#fff;align-self:flex-end;border-top-right-radius:6px}.milestone{background:#eff6ff;border:1px solid #d8e8fb;color:#1e4fa3;padding:9px 12px;border-radius:12px;text-align:center;font-size:10px;font-weight:700}.composer{margin-top:auto;padding:10px;background:#fff;border-top:1px solid var(--line);display:flex;gap:7px}.composer input{flex:1;border:1px solid var(--line);background:#f8fafc;border-radius:15px;padding:11px 13px}.composer button{width:43px;border:0;border-radius:14px;background:var(--blue);color:#fff}
+.messages{background:#f8fafc;flex:1;display:flex;flex-direction:column;min-height:0}.messages-body{padding-bottom:10px;overflow:auto}
 .msg-row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);cursor:pointer}
 .msg-row-body{flex:1;min-width:0}
 .msg-row-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
@@ -149,8 +152,10 @@ h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .tiny{font-size:11px}.small{font-
 .msg-time{font-size:11px;color:#94a3b8;flex:0 0 auto}
 .msg-preview{margin-top:3px;font-size:12px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .unread-dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex:0 0 auto}
-.exchange{overflow:auto;background:#f8fafc}.exchange-head{padding:22px 18px;background:#fff;border-bottom:1px solid var(--line)}.status{display:inline-flex;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;padding:7px 10px;border-radius:99px;font-size:10px;font-weight:800}.timeline{padding:18px}.timeline-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;margin-bottom:9px;display:flex;gap:12px}.dot{width:27px;height:27px;border-radius:50%;background:#e2e8f0;color:#64748b;display:grid;place-items:center;font-size:11px;font-weight:800;flex:0 0 auto}.done .dot{background:#dcfce7;color:#166534}.current .dot{background:#dbeafe;color:#1e4fa3}.timeline-card h3{font-size:13px}.timeline-card p{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.45}
-.profile{overflow:auto;background:#f8fafc}.profile-body{padding:18px}.profile-home{overflow:hidden}.profile-home img{height:180px}.profile-home .p{padding:15px}.verify{margin-top:12px}.verify-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:12px}.ok{color:#15803d;font-weight:800}
+.exchange{background:#f8fafc;flex:1;display:flex;flex-direction:column;min-height:0}.exchange-head{padding:22px 18px;background:#fff;border-bottom:1px solid var(--line)}.status{display:inline-flex;background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;padding:7px 10px;border-radius:99px;font-size:10px;font-weight:800}.timeline{padding:18px}.timeline-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:15px;margin-bottom:9px;display:flex;gap:12px}.dot{width:27px;height:27px;border-radius:50%;background:#e2e8f0;color:#64748b;display:grid;place-items:center;font-size:11px;font-weight:800;flex:0 0 auto}.done .dot{background:#dcfce7;color:#166534}.current .dot{background:#dbeafe;color:#1e4fa3}.timeline-card h3{font-size:13px}.timeline-card p{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.45}
+.profile{background:#f8fafc;flex:1;display:flex;flex-direction:column;min-height:0}.profile-body{padding:18px;overflow:auto;flex:1}.profile-home{overflow:hidden}.profile-home img{height:180px}.profile-home .p{padding:15px}.verify{margin-top:12px}.verify-row{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);font-size:12px}.ok{color:#15803d;font-weight:800}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}.stat-grid b{display:block;font-size:22px;letter-spacing:-.02em}.stat-grid span{display:block;margin-top:2px;font-size:11px;color:#64748b;font-weight:650}
+.settings-label{display:flex;align-items:center;gap:10px}.settings-ico{width:18px;text-align:center;font-size:13px;flex:0 0 auto}
 .toast{position:absolute;left:16px;right:16px;bottom:88px;background:#0f172a;color:#fff;padding:12px 14px;border-radius:14px;font-size:11px;z-index:50;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
 .splash{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#3f83db 0%,#2f5fa8 55%,#1d3654 100%)}
 .splash-logo{width:88px;height:88px;border-radius:26px;background:rgba(255,255,255,.16);display:grid;place-items:center;box-shadow:0 18px 40px rgba(0,0,0,.18)}
@@ -180,7 +185,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 .hero h1{font-size:38px!important}
 .hero .lead{font-size:13px!important;line-height:1.75!important}
 .collage img,.deck-image img,.detail-img img{filter:saturate(.96) contrast(1.02)}
-.card,.deck-card,.profile-home,.verify{box-shadow:0 12px 40px rgba(20,34,53,.07)!important}
+.card,.deck-card,.profile-home,.verify{box-shadow:0 10px 30px rgba(20,34,53,.05)!important}
 .primary{transition:transform .18s,box-shadow .18s!important}.primary:hover{transform:translateY(-2px)!important;box-shadow:0 15px 32px rgba(50,118,207,.28)!important}
 .choice{transition:transform .18s,border-color .18s,background .18s!important}.choice:active{transform:scale(.985)!important}
 .deck-card{touch-action:none!important}
@@ -200,6 +205,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 .sub-loc{font-size:11px;color:var(--muted);font-weight:600;margin-top:3px}
 .settings-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:12px;font-weight:650}
 .settings-row:last-child{border-bottom:0}
+.settings-group-head{padding:14px 0 8px}.settings-group-head b{font-size:13px}
+.warn-box{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:14px;padding:13px 14px;font-size:11.5px;line-height:1.55;margin-top:10px}
 .switch{width:44px;height:26px;border-radius:99px;background:#e2e8f0;border:0;position:relative;padding:0;flex:0 0 auto}
 .switch i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.2);transition:.2s;display:block}
 .switch.on{background:var(--blue)}
@@ -333,24 +340,32 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 .detail-section-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .detail-section-head .ico-box{width:34px;height:34px;border-radius:10px;background:var(--light-blue);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto}
 .detail-section-head h3{font-size:16px;letter-spacing:-.02em}
-.info-row{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:16px;padding:11px 13px;margin-bottom:8px}
-.info-icon{width:36px;height:36px;border-radius:11px;background:#fff;box-shadow:0 4px 10px rgba(15,23,42,.1);display:flex;align-items:center;justify-content:center;font-size:15px;flex:0 0 auto;color:var(--blue)}
+.info-row{display:flex;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line)}
+.info-row:last-child{border-bottom:0}
+.info-icon{width:30px;height:30px;border-radius:10px;background:var(--light-blue);display:flex;align-items:center;justify-content:center;font-size:13px;flex:0 0 auto;color:var(--blue)}
 .info-label{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#94a3b8}
 .info-value{font-size:13.5px;font-weight:800;color:#0f172a;margin-top:2px}
+.overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 12px;margin-top:2px}
+.overview-item{display:flex;flex-direction:column;gap:7px;min-width:0}
+.overview-item .info-icon{width:26px;height:26px;border-radius:9px;font-size:12px}
+.overview-item .info-label{font-size:9px}
+.overview-item .info-value{font-size:12.5px;line-height:1.3;margin-top:0}
 
 /* v6: icon set + flag button */
 .heart{display:flex;align-items:center;justify-content:center}
+.heart.is-fav svg{fill:currentColor}
 .flag-btn{right:60px;color:#64748b}
 .ico svg,.ico-box svg,.info-icon svg,.ls-pin svg,.deck-empty-icon svg{display:block}
 .ls-pin svg{width:34px;height:34px;color:var(--blue)}
 .deck-empty-icon{color:var(--blue)}
 .spark{color:#fff}
-@media(max-width:600px){.app{padding:0}.phone-shell{width:100%;height:100vh;min-height:0}.phone{border:0;border-radius:0;box-shadow:none}.phone::before,.phone::after,.phone-btn{display:none}}
+@media(max-width:600px){.app{padding:0}.phone-shell{width:100%;height:100vh;min-height:0}.phone{border:0;border-radius:0;box-shadow:none}.phone::before,.phone::after,.phone-btn,.cam-dot{display:none}}
 
-/* keep the first content row clear of the phone notch */
-.hero-inner{padding-top:42px}
-.top{padding-top:30px}
-.saved-top{padding-top:30px}
+/* keep the first content row clear of the dynamic island */
+.hero-inner{padding-top:56px}
+.top{padding-top:44px}
+.saved-top{padding-top:44px}
+.chatbar{padding-top:44px}
 </style>
 </head>
 <body>
@@ -366,6 +381,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
   <span class="phone-btn vol-up"></span>
   <span class="phone-btn vol-down"></span>
   <span class="phone-btn power"></span>
+  <span class="phone-btn cam-control"></span>
+  <span class="cam-dot"></span>
 <div class="phone">
 
 <section id="splash" class="screen active">
@@ -429,7 +446,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 <section id="onboard" class="screen">
   <div class="onboard scroll">
     <div class="ob-head">
-      <button class="ob-back hidden" id="obBackBtn" onclick="obBack()">←</button>
+      <button class="ob-back hidden" id="obBackBtn" onclick="obBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button>
       <div class="ob-dots"><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
       <button class="ghost ob-skip" onclick="go('discover')">Overslaan</button>
     </div>
@@ -439,11 +456,11 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
         <p class="ob-copy">We controleren of je corporatie is aangesloten bij Ruilmijnwoning.</p>
         <input class="ob-search" placeholder="Zoek je corporatie" oninput="obFilterCorp(this.value)">
         <div class="ob-options" id="obCorpList">
-          <button class="choice selected" onclick="obSelect(this)"><span>Ymere</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>De Alliantie</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>Vestia</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>Woonstad Rotterdam</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>Portaal</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obSelect(this)"><span>Ymere</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>De Alliantie</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Vestia</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Woonstad Rotterdam</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Portaal</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
         </div>
         <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
       </div>
@@ -476,9 +493,9 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
         </div>
         <p class="ls-stepper-label">Type woning</p>
         <div class="ob-options">
-          <button class="choice selected" onclick="obSelect(this)"><span>Appartement</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>Eengezinswoning</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>Studio</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obSelect(this)"><span>Appartement</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Eengezinswoning</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Studio</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
         </div>
         <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
       </div>
@@ -517,10 +534,10 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
         <h1 class="ob-title">Waar zou je willen wonen?</h1>
         <p class="ob-copy">Selecteer een of meerdere gebieden waar je interesse in hebt.</p>
         <div class="ob-options">
-          <button class="choice selected" onclick="obToggle(this)"><span>Amsterdam</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obToggle(this)"><span>Rotterdam</span><span class="check">✓</span></button>
-          <button class="choice selected" onclick="obToggle(this)"><span>Utrecht</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obToggle(this)"><span>Den Haag</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>Amsterdam</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Rotterdam</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>Utrecht</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Den Haag</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
           <button class="ob-add" onclick="toast('Gebied toevoegen')">+ Voeg een gebied toe</button>
         </div>
         <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
@@ -534,10 +551,10 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
         </div>
         <p class="ls-stepper-label">Prijsklasse</p>
         <div class="ob-options" style="margin-bottom:16px">
-          <button class="choice" onclick="obSelect(this)"><span>Tot €800</span><span class="check">✓</span></button>
-          <button class="choice selected" onclick="obSelect(this)"><span>€800 – €1200</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>€1200 – €1600</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obSelect(this)"><span>€1600+</span><span class="check">✓</span></button>
+          <button class="choice" onclick="obSelect(this)"><span>Tot €800</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice selected" onclick="obSelect(this)"><span>€800 – €1200</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>€1200 – €1600</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obSelect(this)"><span>€1600+</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
         </div>
         <p class="ls-stepper-label">Minimaal aantal kamers</p>
         <div class="ob-tiles">
@@ -552,17 +569,17 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
         <h1 class="ob-title">Wat vind je belangrijk?</h1>
         <p class="ob-copy">Kies de kenmerken die voor jou onmisbaar zijn.</p>
         <div class="ob-options">
-          <button class="choice selected" onclick="obToggle(this)"><span>Balkon</span><span class="check">✓</span></button>
-          <button class="choice selected" onclick="obToggle(this)"><span>Buitenruimte</span><span class="check">✓</span></button>
-          <button class="choice selected" onclick="obToggle(this)"><span>OV in de buurt</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obToggle(this)"><span>Begane grond</span><span class="check">✓</span></button>
-          <button class="choice" onclick="obToggle(this)"><span>Huisdiervriendelijk</span><span class="check">✓</span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>Balkon</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>Buitenruimte</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice selected" onclick="obToggle(this)"><span>OV in de buurt</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Begane grond</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
+          <button class="choice" onclick="obToggle(this)"><span>Huisdiervriendelijk</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></span></button>
         </div>
         <button class="primary" style="margin-top:22px" onclick="obNext()">Verder</button>
       </div>
       <div class="ob-step">
         <div class="ob-final">
-          <div class="ob-final-icon">✓</div>
+          <div class="ob-final-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><polyline points="20 6 9 17 4 12"/></svg></div>
           <h1 class="ob-title" style="margin-top:0">Bijna zover.</h1>
           <p class="ob-copy">Nog één stap: maak je advertentie aan zodat andere huurders je woning kunnen vinden.</p>
           <button class="primary" onclick="obFinish()">Advertentie plaatsen</button>
@@ -575,7 +592,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 <section id="listing" class="screen">
   <div class="listing scroll">
     <div class="ls-head">
-      <button class="ob-back hidden" id="lsBackBtn" onclick="lsBack()">←</button>
+      <button class="ob-back hidden" id="lsBackBtn" onclick="lsBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button>
       <div class="ob-dots"><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
       <button class="ghost ob-skip" onclick="go('profile')">Sluiten</button>
     </div>
@@ -661,9 +678,9 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
               <span class="pill-new" id="deckNewBadge">NIEUW!</span>
             </div>
             <button class="heart flag-btn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button>
-            <button class="heart" id="favBtn" aria-label="Bewaar woning" onclick="saveHome()">♡</button>
+            <button class="heart" id="favBtn" aria-label="Bewaar woning" onclick="saveHome()"><svg id="favIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
             <div class="deck-overlay-info">
-              <span class="pill-liked liked-above-title" id="deckLikedBadge">♥ Vond jouw woning leuk</span>
+              <span class="pill-liked liked-above-title" id="deckLikedBadge"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" style="vertical-align:-1px;margin-right:3px"><path d="M12 21s-7.5-4.6-10-9.3C.5 7.9 2.4 4 6.1 4c2 0 3.6 1.1 4.2 2.6C10.9 5.1 12.5 4 14.5 4c3.7 0 5.6 3.9 4.1 7.7C19.5 16.4 12 21 12 21z"/></svg>Vond jouw woning leuk</span>
               <div class="deck-head-row">
                 <h3 id="deckTitle">Weesperzijde 84</h3>
                 <div class="price" id="deckPrice">€685 / mnd</div>
@@ -694,12 +711,12 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
       </div>
     </div>
   </div>
-  <nav class="bottom"><button class="nav active" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+  <nav class="bottom"><button class="nav active" onclick="go('discover')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>Ruilen</button><button class="nav" onclick="go('messages')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profiel</button></nav>
 </section>
 
 <section id="detail" class="screen">
   <div class="detail scroll">
-    <div class="detail-img"><img id="detailImg" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1100&q=85" alt="Woningfoto"><button class="photo-tap left" aria-label="Vorige foto" onclick="detailPhoto(-1)"></button><button class="photo-tap right" aria-label="Volgende foto" onclick="detailPhoto(1)"></button><div class="photo-dots" id="detailPhotoDots"></div><button class="backbtn" onclick="closeDetail()">←</button><button class="heart detail-fav flag-btn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button><button class="heart detail-fav" id="detailFavBtn" aria-label="Bewaar woning" onclick="saveHome()">♡</button></div>
+    <div class="detail-img"><img id="detailImg" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1100&q=85" alt="Woningfoto"><button class="photo-tap left" aria-label="Vorige foto" onclick="detailPhoto(-1)"></button><button class="photo-tap right" aria-label="Volgende foto" onclick="detailPhoto(1)"></button><div class="photo-dots" id="detailPhotoDots"></div><button class="backbtn" onclick="closeDetail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button><button class="heart detail-fav flag-btn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button><button class="heart detail-fav" id="detailFavBtn" aria-label="Bewaar woning" onclick="saveHome()"><svg id="detailFavIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
     <div class="detail-body">
       <div class="deck-head-row">
         <h1 id="detailTitle">Weesperzijde 84</h1>
@@ -711,7 +728,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
       </div>
       <div class="badge-row static-row">
         <span class="pill-match" id="detailMatchBadge">94% match</span>
-        <span class="pill-liked" id="detailLikedBadge">♥ Vond jouw woning leuk</span>
+        <span class="pill-liked" id="detailLikedBadge"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" style="vertical-align:-1px;margin-right:3px"><path d="M12 21s-7.5-4.6-10-9.3C.5 7.9 2.4 4 6.1 4c2 0 3.6 1.1 4.2 2.6C10.9 5.1 12.5 4 14.5 4c3.7 0 5.6 3.9 4.1 7.7C19.5 16.4 12 21 12 21z"/></svg>Vond jouw woning leuk</span>
       </div>
       <div class="deck-meta-icons" id="detailFacts"></div>
 
@@ -722,17 +739,19 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 
       <div class="detail-section">
         <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 11h6M9 15h4"/></svg></span><h3>Overzicht</h3></div>
-        <div class="info-row"><span class="info-icon">€</span><div><div class="info-label">Huurprijs</div><div class="info-value" id="ovHuur">€685</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span><div><div class="info-label">Servicekosten</div><div class="info-value" id="ovService">€35</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Aantal kamers</div><div class="info-value" id="ovRooms">3</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Bouwjaar</div><div class="info-value" id="ovYear">2013</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><div><div class="info-label">Energielabel</div><div class="info-value" id="ovEnergy">A</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><div><div class="info-label">Oppervlakte</div><div class="info-value" id="ovSize">78 m²</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Min. bewoners</div><div class="info-value" id="ovMinOcc">Niet gespecificeerd</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Max. bewoners</div><div class="info-value" id="ovMaxOcc">Niet gespecificeerd</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><div class="info-label">Ligging</div><div class="info-value" id="ovLigging">Niet gespecificeerd</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Min. leeftijd</div><div class="info-value" id="ovMinAge">Niet gespecificeerd</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.5 3H4a1 1 0 0 0-1 1v5.5a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83z"/><circle cx="7.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/></svg></span><div><div class="info-label">Woninglabel</div><div class="info-value" id="ovLabel">Niet gespecificeerd</div></div></div>
+        <div class="overview-grid">
+        <div class="overview-item"><span class="info-icon">€</span><div><div class="info-label">Huurprijs</div><div class="info-value" id="ovHuur">€685</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span><div><div class="info-label">Servicekosten</div><div class="info-value" id="ovService">€35</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Aantal kamers</div><div class="info-value" id="ovRooms">3</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Bouwjaar</div><div class="info-value" id="ovYear">2013</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><div><div class="info-label">Energielabel</div><div class="info-value" id="ovEnergy">A</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><div><div class="info-label">Oppervlakte</div><div class="info-value" id="ovSize">78 m²</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Min. bewoners</div><div class="info-value" id="ovMinOcc">Niet gespecificeerd</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Max. bewoners</div><div class="info-value" id="ovMaxOcc">Niet gespecificeerd</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><div class="info-label">Ligging</div><div class="info-value" id="ovLigging">Niet gespecificeerd</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Min. leeftijd</div><div class="info-value" id="ovMinAge">Niet gespecificeerd</div></div></div>
+        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.5 3H4a1 1 0 0 0-1 1v5.5a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83z"/><circle cx="7.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/></svg></span><div><div class="info-label">Woninglabel</div><div class="info-value" id="ovLabel">Niet gespecificeerd</div></div></div>
+        </div>
       </div>
 
       <div class="detail-section">
@@ -755,7 +774,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 
       <div class="detail-section">
         <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span><h3>Verhuurder</h3></div>
-        <div class="landlord-row"><span id="detailLandlord">Ymere Woningbouw (DAEB)</span><span class="verified-pill">✓ Geverifieerd</span></div>
+        <div class="landlord-row"><span id="detailLandlord">Ymere Woningbouw (DAEB)</span><span class="verified-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="10" height="10" style="vertical-align:-1px;margin-right:2px"><polyline points="20 6 9 17 4 12"/></svg>Geverifieerd</span></div>
       </div>
 
       <div style="height:6px"></div>
@@ -768,9 +787,9 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 
 <section id="match" class="screen">
  <div class="matchscreen scroll">
-   <div class="matchtop"><button class="iconbtn" style="background:#ffffff12;color:#fff;border-color:#334155" onclick="go('discover')">×</button></div>
+   <div class="matchtop"><button class="iconbtn" style="background:#ffffff12;color:#fff;border-color:#334155" onclick="go('discover')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
    <div class="celebrate"><div class="spark"><svg viewBox="0 0 24 24" fill="currentColor" width="45" height="45"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div><h1>Jullie hebben een match!</h1><p class="muted" style="color:#cbd5e1;line-height:1.6;font-size:13px">Jij en Sophie hebben allebei interesse. Bekijk de woningen, start een gesprek en ontdek of de ruil werkt.</p>
-    <div class="homes"><div class="home-card"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=700&q=85"></div><div class="home-card"><img src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=700&q=85"></div><div class="swap">⇄</div></div>
+    <div class="homes"><div class="home-card"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=700&q=85"></div><div class="home-card"><img src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=700&q=85"></div><div class="swap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div></div>
     <div class="match-actions"><button class="primary" onclick="go('chat')">Start gesprek</button><button class="secondary" onclick="go('exchange')">Bekijk ruilproces</button></div>
    </div>
  </div>
@@ -789,37 +808,65 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
     </div>
     <span class="unread-dot"></span>
    </div>
+   <div class="msg-row" onclick="go('chat')">
+    <div class="avatar">MV</div>
+    <div class="msg-row-body">
+     <div class="msg-row-top"><b>Mark de Vries</b><span class="msg-time">12:05</span></div>
+     <p class="msg-preview">Top, ik stuur je zo de foto's van de tuin door.</p>
+    </div>
+   </div>
+   <div class="msg-row" onclick="go('chat')">
+    <div class="avatar">AB</div>
+    <div class="msg-row-body">
+     <div class="msg-row-top"><b>Anouk Bakker</b><span class="msg-time">Gisteren</span></div>
+     <p class="msg-preview">Bedankt voor de rondleiding gisteren, we denken er nog over na.</p>
+    </div>
+   </div>
+   <div class="msg-row" onclick="go('chat')">
+    <div class="avatar">YE</div>
+    <div class="msg-row-body">
+     <div class="msg-row-top"><b>Youssef El Amrani</b><span class="msg-time">Gisteren</span></div>
+     <p class="msg-preview">Kunnen we de huurvoorwaarden nog een keer doornemen?</p>
+    </div>
+   </div>
+   <div class="msg-row" onclick="go('chat')">
+    <div class="avatar">LV</div>
+    <div class="msg-row-body">
+     <div class="msg-row-top"><b>Lotte Visser</b><span class="msg-time">Ma</span></div>
+     <p class="msg-preview">Super, dan spreken we zaterdag af voor de bezichtiging.</p>
+    </div>
+   </div>
   </div>
  </div>
-  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav active" onclick="go('messages')"><span class="ico">◌</span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>Ruilen</button><button class="nav active" onclick="go('messages')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profiel</button></nav>
 </section>
 
 <section id="chat" class="screen">
  <div class="chat">
-  <div class="chatbar"><button class="ghost" onclick="go('messages')">←</button><div class="avatar">SJ</div><div style="flex:1"><b style="font-size:13px">Sophie Janssen</b><div class="tiny muted">Amsterdam-Oost · Ymere</div></div><button class="iconbtn" onclick="go('exchange')">⇄</button></div>
-  <div class="chatbody scroll"><div class="milestone">Vandaag · Ruilmatch geaccepteerd door beide partijen</div><div class="bubble them">Hoi! Wat een mooie woning heb je. Zullen we zaterdag even bellen om de woningruil te bespreken?</div><div class="bubble me">Hoi Sophie! Jazeker. We zijn vooral benieuwd of de locatie en voorwaarden voor ons allebei goed uitpakken.</div><div class="bubble them">Lijkt me goed. Ik heb mijn gegevens alvast gecontroleerd. Zullen we daarna samen de aanvraag bekijken?</div><div class="milestone">Volgende stap · Samen de aanvraag voorbereiden</div></div>
+  <div class="chatbar"><button class="ghost" onclick="go('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button><div class="avatar">SJ</div><div style="flex:1"><b style="font-size:13px">Sophie Janssen</b><div class="tiny muted">Amsterdam-Oost · Ymere</div></div><button class="iconbtn" onclick="go('exchange')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button></div>
+  <div class="chatbody scroll"><div class="milestone">Vandaag · Ruilmatch geaccepteerd door beide partijen</div><div class="bubble them">Hoi! Wat een mooie woning heb je. Zullen we zaterdag even bellen om de woningruil te bespreken?</div><div class="bubble me">Hoi Sophie! Jazeker. We zijn vooral benieuwd of de locatie en voorwaarden voor ons allebei goed uitpakken.</div><div class="bubble them">Lijkt me goed. Ik heb mijn gegevens alvast gecontroleerd. Zullen we daarna samen de aanvraag bekijken?</div></div>
   <div class="composer"><input placeholder="Schrijf een bericht…" id="msg"><button onclick="sendMsg()">↑</button></div>
  </div>
 </section>
 
 <section id="exchange" class="screen">
  <div class="exchange scroll">
-  <div class="exchange-head"><button class="ghost" onclick="go('discover')">←</button><div style="height:12px"></div><div class="eyebrow">Jouw woningruil</div><h1 style="font-size:28px;letter-spacing:-.035em;margin-top:5px">Weesperzijde ⇄ Utrecht</h1><p class="small muted" style="margin-top:6px">Sophie Janssen · Ymere</p><div style="height:12px"></div><span class="status">● Match bevestigd</span></div>
+  <div class="exchange-head"><button class="ghost" onclick="go('discover')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button><div style="height:12px"></div><div class="eyebrow">Jouw woningruil</div><h1 style="font-size:28px;letter-spacing:-.035em;margin-top:5px">Weesperzijde <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" style="vertical-align:-4px"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg> Utrecht</h1><p class="small muted" style="margin-top:6px">Sophie Janssen · Ymere</p><div style="height:12px"></div><span class="status"><svg viewBox="0 0 24 24" width="8" height="8" fill="currentColor" style="vertical-align:1px;margin-right:3px"><circle cx="12" cy="12" r="10"/></svg>Match bevestigd</span></div>
   <div class="timeline">
-   <div class="timeline-card done"><div class="dot">✓</div><div><h3>Ruilmatch bevestigd</h3><p>Beide huurders hebben interesse bevestigd.</p></div></div>
-   <div class="timeline-card done"><div class="dot">✓</div><div><h3>Instemming woningruil</h3><p>De basisgegevens zijn gecontroleerd.</p></div></div>
+   <div class="timeline-card done"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></div><div><h3>Ruilmatch bevestigd</h3><p>Beide huurders hebben interesse bevestigd.</p></div></div>
+   <div class="timeline-card done"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg></div><div><h3>Instemming woningruil</h3><p>De basisgegevens zijn gecontroleerd.</p></div></div>
    <div class="timeline-card current"><div class="dot">3</div><div><h3>Aanvraag indienen</h3><p>Upload de benodigde documenten en dien de aanvraag in.</p><button class="primary" style="padding:10px 12px;border-radius:12px;font-size:11px;margin-top:10px" onclick="toast('Document upload geopend')">Documenten uploaden</button></div></div>
    <div class="timeline-card"><div class="dot">4</div><div><h3>Goedkeuring corporaties</h3><p>De betrokken corporaties beoordelen de aanvraag.</p></div></div>
    <div class="timeline-card"><div class="dot">5</div><div><h3>Sleuteloverdracht</h3><p>Na goedkeuring kunnen de laatste afspraken worden afgerond.</p></div></div>
   </div>
  </div>
-  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav active dossier-nav-btn" onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Bewaard</button><button class="nav active dossier-nav-btn" onclick="go('exchange')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>Ruilen</button><button class="nav" onclick="go('messages')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profiel</button></nav>
 </section>
 
 <section id="saved" class="screen">
  <div class="saved scroll">
   <div class="saved-top">
-   <button class="iconbtn" onclick="go('discover')">←</button>
+   <button class="iconbtn" onclick="go('discover')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button>
    <h2>Likes &amp; Favorieten</h2>
    <button class="saved-req-pill" id="savedReqPill" onclick="setSavedTab('requests')">0 verzoeken</button>
   </div>
@@ -830,55 +877,161 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
   </div>
   <div class="saved-list" id="savedList"></div>
  </div>
-  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav active" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Ontdek</button><button class="nav active" onclick="openSaved()"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>Ruilen</button><button class="nav" onclick="go('messages')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profiel</button></nav>
 </section>
 
 <section id="profile" class="screen">
  <div class="profile scroll">
-  <div class="top"><div class="brand"><img src="logo-icon.png" alt=""><div><b>ruil</b><span>mijnwoning</span></div></div><button class="iconbtn" onclick="go('settings')">⚙</button></div>
+  <div class="top"><div class="brand"><img src="logo-icon.png" alt=""><div><b>ruil</b><span>mijnwoning</span></div></div></div>
   <div class="profile-body">
-   <div class="eyebrow">Mijn woning</div><h1 style="font-size:28px;letter-spacing:-.035em;margin-top:4px">Utrecht · Oog in Al</h1><p class="small muted" style="margin-top:5px">€685 / maand · 4 kamers · 98 m²</p>
-   <div class="card profile-home" style="margin-top:15px"><img class="home-img" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85"><div class="p"><b>Je advertentie is actief</b><p class="tiny muted" style="margin-top:4px">Je woning wordt getoond aan passende ruilers.</p></div></div>
-   <div class="card verify" style="padding:0 15px"><div class="verify-row"><span>Adres</span><span class="ok">✓ Geverifieerd</span></div><div class="verify-row"><span>Woninggegevens</span><span class="ok">✓ Geverifieerd</span></div><div class="verify-row"><span>Corporatie</span><span class="ok">✓ Gekoppeld</span></div><div class="verify-row"><span>Zoekprofiel</span><span class="ok">✓ Compleet</span></div></div>
-   <div style="height:12px"></div><button class="primary" style="width:100%" onclick="go('listing');lsGoTo(0)">Advertentie bewerken</button>
-   <div style="height:10px"></div><button class="secondary" style="width:100%" onclick="go('onboard');obGoTo(0)">Woonwensen aanpassen</button>
+   <div style="position:relative;border-radius:20px;overflow:hidden;height:160px">
+    <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=600&q=80" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,0) 45%,rgba(15,23,42,.65) 100%)"></div>
+    <button class="iconbtn" style="position:absolute;top:10px;right:10px;width:32px;height:32px;background:rgba(255,255,255,.92);border:0" onclick="toast('Profielfoto wijzigen')"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+    <div style="position:absolute;left:14px;right:14px;bottom:12px;color:#fff">
+     <h1 style="font-size:19px;letter-spacing:-.02em">Aza Ndoro</h1>
+     <p class="tiny" style="margin-top:2px;color:rgba(255,255,255,.85)">Amsterdam · Huurder</p>
+    </div>
+   </div>
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+     <span class="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="10" height="10" style="vertical-align:-1px;margin-right:2px"><polyline points="20 6 9 17 4 12"/></svg>Profiel compleet</span>
+     <span class="verified-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="10" height="10" style="vertical-align:-1px;margin-right:2px"><polyline points="20 6 9 17 4 12"/></svg>Geverifieerd</span>
+    </div>
+    <button class="ghost" style="display:flex;align-items:center;gap:5px;flex:0 0 auto;color:var(--blue);font-size:12px;font-weight:700" onclick="go('settings')"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Bewerken</button>
+   </div>
+
+   <div class="card" style="padding:16px;margin-top:20px">
+    <div style="display:flex;align-items:center;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--line)">
+     <span class="ico-box" style="border-radius:50%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>
+     <div style="min-width:0">
+      <h3 style="font-size:14px">Mijn advertentie</h3>
+      <p class="tiny muted" style="margin-top:2px">Beheer je advertentie</p>
+     </div>
+    </div>
+
+    <div style="position:relative;border-radius:16px;overflow:hidden;cursor:pointer" onclick="go('listing');lsGoTo(0)">
+     <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=700&q=80" style="width:100%;height:150px;object-fit:cover;display:block">
+     <span class="status" style="position:absolute;top:10px;left:10px">Gepubliceerd</span>
+    </div>
+
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-top:14px">
+     <div style="min-width:0">
+      <b style="font-size:14.5px">Utrecht · Oog in Al</b>
+      <p class="tiny muted" style="margin-top:3px">3584 XX · Utrecht</p>
+     </div>
+     <div style="text-align:right;flex:0 0 auto">
+      <div style="font-size:15px;font-weight:800;color:var(--blue)">€ 685,00</div>
+      <div class="tiny muted" style="letter-spacing:.05em;text-transform:uppercase;margin-top:2px">per maand</div>
+     </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);background:#f1f5f9;border-radius:14px;padding:12px 6px;margin-top:14px;text-align:center">
+     <div><b style="display:block;font-size:14px">4</b><span class="tiny muted">Kamers</span></div>
+     <div style="border-left:1px solid var(--line);border-right:1px solid var(--line)"><b style="display:block;font-size:14px">98 m²</b><span class="tiny muted">Oppervlakte</span></div>
+     <div><b style="display:block;font-size:14px">12 sep</b><span class="tiny muted">Gepubliceerd</span></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+     <button class="secondary" style="width:100%;display:flex;align-items:center;justify-content:center;gap:7px" onclick="go('listing');lsGoTo(0)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Woning aanpassen</button>
+     <button class="primary" style="width:100%;display:flex;align-items:center;justify-content:center;gap:7px" onclick="go('listing');lsGoTo(0)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Advertentie aanpassen</button>
+    </div>
+   </div>
+
+   <div class="card" style="padding:16px;margin-top:14px">
+    <div class="detail-section-head" style="margin-bottom:14px"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5 6 5c2 0 3.5 1.2 4 2.5C10.5 6.2 12 5 14 5c3.5 0 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg></span><h3>Mijn woonwensen</h3></div>
+    <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><div class="info-label">Gewenste locatie</div><div class="info-value">Amsterdam</div></div></div>
+    <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Minimaal</div><div class="info-value">3 kamers</div></div></div>
+    <div class="info-row" style="margin-bottom:0"><span class="info-icon">€</span><div><div class="info-label">Maximale huur</div><div class="info-value">€750 / maand</div></div></div>
+    <p class="tiny muted" style="margin-top:12px">Voorkeuren: Balkon · Buitenruimte · OV in de buurt</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px">
+     <span class="tiny" style="color:var(--blue);font-weight:800">Matchprofiel · 92% compleet</span>
+     <button class="secondary" style="padding:9px 16px;font-size:12px" onclick="go('onboard');obGoTo(0)">Bewerken</button>
+    </div>
+   </div>
+
+   <div class="eyebrow" style="margin-top:22px">Account</div>
+   <div class="card verify" style="padding:0 15px;margin-top:10px">
+    <div class="verify-row settings-link" onclick="go('settings')"><span class="settings-label"><span class="settings-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>Meldingen</span><span class="muted">›</span></div>
+    <div class="verify-row settings-link" onclick="go('settings')"><span class="settings-label"><span class="settings-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>Privacy &amp; veiligheid</span><span class="muted">›</span></div>
+    <div class="verify-row settings-link" onclick="toast('Help &amp; contact geopend')"><span class="settings-label"><span class="settings-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>Help &amp; contact</span><span class="muted">›</span></div>
+    <div class="verify-row settings-link" style="border-bottom:0" onclick="toast('Over Ruilmijnwoning geopend')"><span class="settings-label"><span class="settings-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>Over Ruilmijnwoning</span><span class="muted">›</span></div>
+   </div>
+
+   <div style="height:22px"></div>
+   <button class="secondary" style="width:100%;color:var(--red);border-color:#fecaca" onclick="toast('Je bent uitgelogd')">Uitloggen</button>
   </div>
-  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav active" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>Ruilen</button><button class="nav" onclick="go('messages')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="dot-badge"></span></span>Berichten</button><button class="nav active" onclick="go('profile')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profiel</button></nav>
  </div>
 </section>
 
 <section id="settings" class="screen">
  <div class="profile scroll">
-  <div class="top"><button class="ghost" onclick="go('profile')">← Terug</button><b style="font-size:15px">Instellingen</b><span style="width:34px"></span></div>
+  <div class="top"><button class="ghost" onclick="go('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button><b style="font-size:15px">Instellingen</b><span style="width:34px"></span></div>
   <div class="profile-body">
-   <div class="eyebrow">Account</div>
-   <div class="card verify" style="padding:0 15px;margin-top:10px">
-    <div class="verify-row"><span>Naam</span><span class="muted">Janine Koster</span></div>
-    <div class="verify-row"><span>E-mailadres</span><span class="muted">janine@email.nl</span></div>
-    <div class="verify-row" style="border-bottom:0"><span>Telefoonnummer</span><span class="muted">06 12345678</span></div>
+   <div class="eyebrow">Accountgegevens</div><p class="tiny muted" style="margin-top:3px">Beheer je persoonlijke gegevens</p>
+   <div class="card" style="padding:16px;margin-top:10px">
+    <div class="ob-fields two"><div class="field"><label>Voornaam</label><input value="Janine"></div><div class="field"><label>Achternaam</label><input value="Koster"></div></div>
+    <div class="ob-fields two" style="margin-top:14px"><div class="field"><label>Geboortedatum</label><input type="date" value="1990-03-16"></div><div class="field"><label>E-mailadres</label><input type="email" value="janine@email.nl"></div></div>
+    <div class="ob-fields two" style="margin-top:14px"><div class="field"><label>Telefoonnummer</label><input type="tel" value="06 12345678"></div><div class="field"><label>Bruto jaarinkomen (€)</label><input value="42.000"></div></div>
+    <p class="ls-stepper-label" style="margin-top:16px">Aantal gezinsleden</p>
+    <div class="ls-stepper" style="margin-bottom:6px"><button class="ls-step-btn" onclick="obAdjustNum('stFamilySize',-1,1)">−</button><div class="ls-step-value"><b id="obVal_stFamilySize">2</b><span>personen</span></div><button class="ls-step-btn" onclick="obAdjustNum('stFamilySize',1,1)">+</button></div>
+    <div class="yn-row"><span class="yn-label">Heb je een partner?</span><div class="yn-toggle"><button class="yn-btn selected" onclick="obSelect(this)">Ja</button><button class="yn-btn" onclick="obSelect(this)">Nee</button></div></div>
+    <div class="yn-row"><span class="yn-label">Heb je een bewindvoerder?</span><div class="yn-toggle"><button class="yn-btn" onclick="obSelect(this)">Ja</button><button class="yn-btn selected" onclick="obSelect(this)">Nee</button></div></div>
+    <div class="yn-row" style="border-bottom:0"><span class="yn-label">Ben je zelfstandig ondernemer?</span><div class="yn-toggle"><button class="yn-btn" onclick="obSelect(this)">Ja</button><button class="yn-btn selected" onclick="obSelect(this)">Nee</button></div></div>
+    <button class="primary" style="width:100%;margin-top:16px" onclick="toast('Profielgegevens bijgewerkt')">Profielgegevens bijwerken <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></button>
    </div>
-   <button class="secondary" style="width:100%;margin-top:10px" onclick="toast('Profiel bewerken geopend')">Profiel bewerken</button>
 
-   <div class="eyebrow" style="margin-top:22px">Voorkeuren</div>
-   <div class="card verify" style="padding:0 15px;margin-top:10px">
-    <div class="settings-row"><span>Pushmeldingen</span><button class="switch on" onclick="toggleSwitch(this)"><i></i></button></div>
-    <div class="settings-row"><span>E-mailupdates</span><button class="switch on" onclick="toggleSwitch(this)"><i></i></button></div>
-    <div class="settings-row"><span>Geluid bij nieuwe matches</span><button class="switch" onclick="toggleSwitch(this)"><i></i></button></div>
+   <div class="eyebrow" style="margin-top:22px">Wachtwoord wijzigen</div><p class="tiny muted" style="margin-top:3px">Wijzig je inlogwachtwoord</p>
+   <div class="card" style="padding:16px;margin-top:10px">
+    <div class="field"><label>Oud wachtwoord</label><input type="password" placeholder="Oud wachtwoord"></div>
+    <div class="ob-fields two" style="margin-top:14px"><div class="field"><label>Nieuw wachtwoord</label><input type="password" placeholder="Nieuw wachtwoord"></div><div class="field"><label>Bevestig nieuw wachtwoord</label><input type="password" placeholder="Bevestig wachtwoord"></div></div>
+    <button class="primary" style="width:100%;margin-top:16px" onclick="toast('Wachtwoord gewijzigd')">Wachtwoord wijzigen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></button>
+   </div>
+
+   <div class="eyebrow" style="margin-top:22px">Meldingsvoorkeuren</div><p class="tiny muted" style="margin-top:3px">Geef aan welke meldingen je van ons wilt ontvangen. Je kunt je voorkeuren op elk moment aanpassen.</p>
+
+   <div class="card verify" style="padding:0 15px;margin-top:12px">
+    <div class="settings-group-head"><b>Chatberichten</b><p class="tiny muted" style="margin-top:2px">Meldingen over nieuwe en ongelezen berichten</p></div>
+    <div class="settings-row"><span>Nieuw chatbericht ontvangen</span></div>
+    <div class="settings-row" style="border-bottom:0"><span>Herinnering: je hebt nog een ongelezen bericht</span></div>
+   </div>
+
+   <div class="card verify" style="padding:0 15px;margin-top:12px">
+    <div class="settings-group-head"><b>Interesse &amp; matches</b><p class="tiny muted" style="margin-top:2px">Meldingen over likes en wederzijdse interesse</p></div>
+    <div class="settings-row"><span>Iemand heeft je advertentie geliket</span></div>
+    <div class="settings-row"><span>Je hebt een like terug ontvangen — je hebt een match!</span></div>
+    <div class="settings-row"><span>Er is een match gestart</span></div>
+    <div class="settings-row" style="border-bottom:0"><span>De andere bewoner heeft geen interesse meer</span></div>
+   </div>
+
+   <div class="card verify" style="padding:0 15px;margin-top:12px">
+    <div class="settings-group-head"><b>Aanvraag woningruil</b><p class="tiny muted" style="margin-top:2px">Meldingen over de status van je ruilaanvraag</p></div>
+    <div class="settings-row"><span>Herinnering: je aanvraag is nog niet ingediend</span></div>
+    <div class="settings-row"><span>Je aanvraag is klaar voor beoordeling</span></div>
+    <div class="settings-row" style="border-bottom:0"><span>Resultaat van de corporatie</span></div>
+   </div>
+
+   <div class="card verify" style="padding:0 15px;margin-top:12px">
+    <div class="settings-group-head"><b>Advertentie &amp; account</b><p class="tiny muted" style="margin-top:2px">Meldingen over je advertentie en accountstatus</p></div>
+    <div class="settings-row"><span>Herinnering: je account is nog niet compleet</span></div>
+    <div class="settings-row" style="border-bottom:0"><span>Herinnering: je advertentie heeft nog geen foto's</span></div>
    </div>
 
    <div class="eyebrow" style="margin-top:22px">Privacy &amp; beveiliging</div>
    <div class="card verify" style="padding:0 15px;margin-top:10px">
-    <div class="verify-row settings-link" onclick="toast('Wachtwoord wijzigen geopend')"><span>Wachtwoord wijzigen</span><span class="muted">›</span></div>
     <div class="verify-row settings-link" onclick="toast('Privacyverklaring geopend')"><span>Privacyverklaring</span><span class="muted">›</span></div>
     <div class="verify-row settings-link" style="border-bottom:0" onclick="toast('Gebruiksvoorwaarden geopend')"><span>Gebruiksvoorwaarden</span><span class="muted">›</span></div>
    </div>
 
    <div style="height:22px"></div>
    <button class="secondary" style="width:100%;color:var(--red);border-color:#fecaca" onclick="toast('Je bent uitgelogd')">Uitloggen</button>
-   <div style="height:10px"></div>
-   <button class="ghost" style="width:100%;color:var(--red)" onclick="toast('Accountverwijdering aangevraagd')">Account verwijderen</button>
+
+   <div class="eyebrow" style="margin-top:22px">Account verwijderen</div><p class="tiny muted" style="margin-top:3px">Permanente verwijdering van je account en gegevens</p>
+   <div class="warn-box">Als je ruilmijnwoning.nl niet meer wilt gebruiken, kun je hier je account verwijderen. Dit is een onomkeerbare actie en al je gegevens worden permanent verwijderd.</div>
+   <button style="width:100%;margin-top:10px;border:0;border-radius:16px;padding:14px 18px;font-weight:700;background:var(--red);color:#fff" onclick="toast('Accountverwijdering aangevraagd')">Mijn account verwijderen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></button>
   </div>
-  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico">⌂</span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico">♡</span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico">⇄</span>Dossier</button><button class="nav" onclick="go('messages')"><span class="ico">◌<span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico">○</span>Profiel</button></nav>
+  <nav class="bottom"><button class="nav" onclick="go('discover')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>Ontdek</button><button class="nav" onclick="openSaved()"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Bewaard</button><button class="nav dossier-nav-btn" disabled onclick="go('exchange')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>Ruilen</button><button class="nav" onclick="go('messages')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span class="dot-badge"></span></span>Berichten</button><button class="nav" onclick="go('profile')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="19" height="19"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Profiel</button></nav>
  </div>
 </section>
 
@@ -886,7 +1039,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
   <div class="filter-sheet">
     <div class="filter-head">
       <h3>Zoekfilters &amp; Woonwensen</h3>
-      <button class="iconbtn" onclick="closeFilters()">✕</button>
+      <button class="iconbtn" onclick="closeFilters()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <div class="filter-body scroll">
       <div>
@@ -899,7 +1052,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
       </div>
       <div>
         <p class="filter-label">Locatie</p>
-        <div class="filter-location"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><input placeholder="Zoek stad..."><span>⌄</span></div>
+        <div class="filter-location"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><input placeholder="Zoek stad..."><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg></span></div>
       </div>
       <div>
         <p class="filter-label">Straal (km)</p>
@@ -938,8 +1091,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
       </div>
     </div>
     <div class="filter-footer">
-      <button class="primary" style="width:100%;border-radius:16px" onclick="applyFilters()">⌕ Toon Resultaten</button>
-      <button class="reset-btn" onclick="resetFilters()">↺ Filters Resetten</button>
+      <button class="primary" style="width:100%;border-radius:16px" onclick="applyFilters()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px;margin-right:4px"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Toon Resultaten</button>
+      <button class="reset-btn" onclick="resetFilters()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg> Filters Resetten</button>
     </div>
   </div>
 </div>
@@ -953,7 +1106,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 <script>
 const screens=[...document.querySelectorAll('.screen')];
 function go(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));}
-function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>e.classList.remove('show'),1800)}
+function toast(t){const e=document.getElementById('toast');e.innerHTML=t;e.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>e.classList.remove('show'),1800)}
+const ICON_HEART_SM='<svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" style="vertical-align:-1px;margin-left:3px"><path d="M12 21s-7.5-4.6-10-9.3C.5 7.9 2.4 4 6.1 4c2 0 3.6 1.1 4.2 2.6C10.9 5.1 12.5 4 14.5 4c3.7 0 5.6 3.9 4.1 7.7C19.5 16.4 12 21 12 21z"/></svg>';
 function setAuth(mode){
  authMode=mode;
  const isLogin=mode==='login';
@@ -980,7 +1134,7 @@ function obBack(){if(obIndex>0)obGoTo(obIndex-1)}
 function obSelect(el){[...el.parentElement.children].forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
 function obToggle(el){el.classList.toggle('selected')}
 function obSelectTile(el){[...el.parentElement.children].forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
-const obNum={surface:75,rooms:3,familySize:2};
+const obNum={surface:75,rooms:3,familySize:2,stFamilySize:2};
 function obAdjustNum(key,delta,min){obNum[key]=Math.max(min,obNum[key]+delta);document.getElementById('obVal_'+key).textContent=obNum[key]}
 function obFilterCorp(q){q=q.toLowerCase();document.querySelectorAll('#obCorpList .choice').forEach(el=>{el.style.display=el.textContent.toLowerCase().includes(q)?'':'none'})}
 let lsFromOnboarding=false;
@@ -1006,7 +1160,7 @@ function lsAdjust(key,delta){
 }
 function lsToggleChip(el){el.classList.toggle('selected')}
 function lsPublish(){
- toast(lsFromOnboarding?'Profiel compleet! Welkom bij Ruilmijnwoning':'Advertentie gepubliceerd ♡');
+ toast(lsFromOnboarding?'Profiel compleet! Welkom bij Ruilmijnwoning':`Advertentie gepubliceerd ${ICON_HEART_SM}`);
  const dest=lsFromOnboarding?'discover':'profile';
  lsFromOnboarding=false;
  setTimeout(()=>go(dest),400);
@@ -1084,7 +1238,7 @@ function savedThumbUp(id){
   savedStore.dismissedRequests[id]=true;
   renderSaved();
   unlockDossier();
-  toast('Verzoek geaccepteerd ♥');
+  toast(`Verzoek geaccepteerd ${ICON_HEART_SM}`);
   setTimeout(()=>go('match'),300);
   return;
  }
@@ -1152,7 +1306,6 @@ function renderTopCard(){
  document.getElementById('deckSub').textContent=item.sub+' · '+item.landlord;
  document.getElementById('deckFacts').innerHTML=factsIconsHtml(item.facts);
  const favBtn=document.getElementById('favBtn');
- favBtn.textContent=item.favorited?'♥':'♡';
  favBtn.classList.toggle('is-fav',item.favorited);
  const starBtn=document.getElementById('starBtn');
  if(starBtn)starBtn.classList.toggle('is-fav',item.favorited);
@@ -1175,7 +1328,7 @@ function commitSwipe(direction,source){
   renderTopCard();
   if(direction==='right'){
    savedStore.likes[item.id]=true;
-   if(item.mutual){unlockDossier();go('match')}else toast('Interesse verstuurd ♥');
+   if(item.mutual){unlockDossier();go('match')}else toast(`Interesse verstuurd ${ICON_HEART_SM}`);
   }else{
    toast('Niet voor mij');
   }
@@ -1207,7 +1360,7 @@ function saveHome(){
  const starBtn=document.getElementById('starBtn');
  if(starBtn){starBtn.classList.remove('pop');void starBtn.offsetWidth;starBtn.classList.add('pop')}
  const detailFavBtn=document.getElementById('detailFavBtn');
- if(detailFavBtn){detailFavBtn.textContent=item.favorited?'♥':'♡';detailFavBtn.classList.toggle('is-fav',item.favorited)}
+ if(detailFavBtn)detailFavBtn.classList.toggle('is-fav',item.favorited);
  if(document.getElementById('saved').classList.contains('active'))renderSaved();
 }
 function openDetail(){openDetailFor(deckState.queue[0],'discover')}
@@ -1243,7 +1396,7 @@ function openDetailFor(item,returnScreen){
   document.getElementById('wwCity').textContent=item.wishes.city;
   document.getElementById('wwRooms').textContent=item.wishes.rooms;
   const detailFavBtn=document.getElementById('detailFavBtn');
-  if(detailFavBtn){detailFavBtn.textContent=item.favorited?'♥':'♡';detailFavBtn.classList.toggle('is-fav',item.favorited)}
+  if(detailFavBtn)detailFavBtn.classList.toggle('is-fav',item.favorited);
  }
  go('detail');
 }

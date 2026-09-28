@@ -120,6 +120,13 @@ h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .tiny{font-size:11px}.small{font-
 .ls-progress-badge{position:absolute;right:12px;top:12px;background:#fff;border-radius:99px;padding:6px 11px;font-size:11px;font-weight:800;color:var(--blue);box-shadow:0 5px 15px rgba(0,0,0,.12)}
 .ls-card-body{padding:16px}.ls-card-body h3{font-size:19px;letter-spacing:-.025em}
 .ls-card-price{font-size:20px;font-weight:800;color:var(--blue);margin-top:6px}
+.ls-inline-input{display:block;border:0;background:transparent;padding:2px 0;width:100%;font-family:inherit;outline:none;border-bottom:1px dashed transparent}
+.ls-inline-input:focus{border-bottom-color:var(--blue)}
+.ls-title-input{font-size:19px;font-weight:800;letter-spacing:-.025em;color:var(--ink)}
+.ls-price-input{font-size:20px;font-weight:800;color:var(--blue);margin-top:6px}
+.ls-desc-textarea{width:100%;min-height:150px;border:1px solid #dbe3ec;background:#f8fafc;border-radius:14px;padding:13px 14px;font:inherit;line-height:1.55;resize:vertical;outline:none}
+.ls-desc-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(50,118,207,.12)}
+.ls-char-count{font-size:11px;color:var(--muted);text-align:right;margin-top:6px}
 .ls-card-facts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .ls-stepper-label{font-size:13px;font-weight:700;color:#334155;margin:0 0 8px}
 .ls-stepper{display:flex;align-items:center;justify-content:center;gap:22px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:18px}
@@ -621,7 +628,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
   <div class="listing scroll">
     <div class="ls-head">
       <button class="ob-back hidden" id="lsBackBtn" onclick="lsBack()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <div class="ob-dots"><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
+      <div class="ob-dots"><span class="ob-dot active"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span><span class="ob-dot"></span></div>
       <button class="ghost ob-skip" onclick="go('profile')">Sluiten</button>
     </div>
     <div class="ls-steps">
@@ -630,12 +637,11 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
         <div class="ls-card">
           <div class="ls-card-photo"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt="">
             <button class="ls-add-photo" onclick="toast('Foto upload geopend')">+ Foto's toevoegen</button>
-            <span class="ls-progress-badge" id="lsProgress">20%</span>
           </div>
           <div class="ls-card-body">
             <div class="eyebrow">Jouw advertentie</div>
-            <h3>Amsterdam Noord</h3>
-            <div class="ls-card-price">€780 / maand</div>
+            <input class="ls-inline-input ls-title-input" id="lsTitleInput" value="Amsterdam Noord" oninput="lsSyncPreview()" aria-label="Titel van je advertentie">
+            <input class="ls-inline-input ls-price-input" id="lsPriceInput" value="€780 / maand" oninput="lsSyncPreview()" aria-label="Huurprijs per maand">
             <div class="ls-card-facts"><span class="fact" id="lsFactSize">68 m²</span><span class="fact" id="lsFactRooms">3 kamers</span><span class="fact">Energielabel B</span></div>
           </div>
         </div>
@@ -670,13 +676,21 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
         <button class="primary" style="margin-top:22px" onclick="lsNext()">Verder</button>
       </div>
       <div class="ls-step">
+        <h1 class="ls-title">Beschrijf je woning</h1>
+        <p class="ob-copy" style="margin-bottom:14px">Vertel iets over je woning. Een goede beschrijving vergroot de kans op een leuke match.</p>
+        <textarea class="ls-desc-textarea" id="lsDescInput" maxlength="600" placeholder="Bijv. Lichte, ruime woning met een eigen balkon, rustig gelegen op loopafstand van winkels en openbaar vervoer..." oninput="lsSyncDescCount()">Lichte, ruime woning met een eigen balkon op het zuiden. Rustig gelegen, op loopafstand van winkels, park en openbaar vervoer.</textarea>
+        <div class="ls-char-count" id="lsDescCount">0 / 600 tekens</div>
+        <button class="primary" style="margin-top:14px" onclick="lsNext()">Verder</button>
+      </div>
+      <div class="ls-step">
         <h1 class="ls-title">Zo ziet je advertentie eruit</h1>
         <div class="ls-preview-card">
           <div class="ls-preview-photo"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=85" alt=""></div>
           <div class="ls-preview-body">
-            <h3>Amsterdam Noord</h3>
+            <h3 id="lsPreviewTitle">Amsterdam Noord</h3>
             <div class="ls-preview-price" id="lsPreviewMeta">€780 · 68 m² · 3 kamers</div>
             <div class="ls-preview-meta">Energielabel B<br>De Alliantie</div>
+            <p class="tiny muted" id="lsPreviewDesc" style="margin-top:8px;line-height:1.55"></p>
             <span class="ls-badge">Jouw advertentie</span>
           </div>
         </div>
@@ -968,7 +982,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
     </div>
 
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
-     <button class="secondary" style="width:100%;display:flex;align-items:center;justify-content:center;gap:7px" onclick="go('listing');lsGoTo(0)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Woning aanpassen</button>
+     <button class="secondary" style="width:100%;display:flex;align-items:center;justify-content:center;gap:7px" onclick="viewMyListing()"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Bekijk mijn advertentie</button>
      <button class="primary" style="width:100%;display:flex;align-items:center;justify-content:center;gap:7px" onclick="go('listing');lsGoTo(0)"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Advertentie aanpassen</button>
     </div>
    </div>
@@ -1264,24 +1278,38 @@ function obAdjustNum(key,delta,min){obNum[key]=Math.max(min,obNum[key]+delta);do
 function obFilterCorp(q){q=q.toLowerCase();document.querySelectorAll('#obCorpList .choice').forEach(el=>{el.style.display=el.textContent.toLowerCase().includes(q)?'':'none'})}
 let lsFromOnboarding=false;
 function obFinish(){lsFromOnboarding=true;go('listing');lsGoTo(0)}
-const lsState={size:68,rooms:3};
+const lsState={size:68,rooms:3,title:'Amsterdam Noord',price:'€780 / maand'};
 let lsIndex=0;
 function lsGoTo(i){
  document.querySelectorAll('#listing .ls-step').forEach((el,idx)=>el.classList.toggle('active',idx===i));
  document.querySelectorAll('#listing .ob-dot').forEach((el,idx)=>el.classList.toggle('active',idx===i));
  document.getElementById('lsBackBtn').classList.toggle('hidden',i===0);
- document.getElementById('lsProgress').textContent=((i+1)*20)+'%';
+ if(i===5)lsRenderPreview();
  lsIndex=i;
 }
-function lsNext(){if(lsIndex<4)lsGoTo(lsIndex+1);else lsPublish()}
+function lsNext(){if(lsIndex<5)lsGoTo(lsIndex+1);else lsPublish()}
 function lsBack(){if(lsIndex>0)lsGoTo(lsIndex-1)}
+function lsRenderPreview(){
+ document.getElementById('lsFactSize').textContent=lsState.size+' m²';
+ document.getElementById('lsFactRooms').textContent=lsState.rooms+' kamers';
+ document.getElementById('lsPreviewTitle').textContent=lsState.title;
+ document.getElementById('lsPreviewMeta').textContent=`${lsState.price.split(' / ')[0]} · ${lsState.size} m² · ${lsState.rooms} kamers`;
+ document.getElementById('lsPreviewDesc').textContent=document.getElementById('lsDescInput').value;
+}
+function lsSyncPreview(){
+ lsState.title=document.getElementById('lsTitleInput').value||'Amsterdam Noord';
+ lsState.price=document.getElementById('lsPriceInput').value||'€780 / maand';
+ lsRenderPreview();
+}
+function lsSyncDescCount(){
+ const el=document.getElementById('lsDescInput');
+ document.getElementById('lsDescCount').textContent=el.value.length+' / 600 tekens';
+}
 function lsAdjust(key,delta){
  const min=key==='size'?20:1;
  lsState[key]=Math.max(min,lsState[key]+delta);
  document.getElementById(key==='size'?'lsSize':'lsRooms').textContent=lsState[key];
- document.getElementById('lsFactSize').textContent=lsState.size+' m²';
- document.getElementById('lsFactRooms').textContent=lsState.rooms+' kamers';
- document.getElementById('lsPreviewMeta').textContent=`€780 · ${lsState.size} m² · ${lsState.rooms} kamers`;
+ lsRenderPreview();
 }
 function lsToggleChip(el){el.classList.toggle('selected')}
 function lsPublish(){
@@ -1541,6 +1569,7 @@ function likeHome(){
 function sendMsg(){const i=document.getElementById('msg');if(i.value.trim()){const d=document.createElement('div');d.className='bubble me';d.textContent=i.value;document.querySelector('.chatbody').appendChild(d);i.value='';document.querySelector('.chatbody').scrollTop=99999}}
 obGoTo(0);
 lsGoTo(0);
+lsSyncDescCount();
 renderTopCard();
 renderSaved();
 setTimeout(()=>go('landing'),2200);

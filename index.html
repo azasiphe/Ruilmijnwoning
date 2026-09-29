@@ -151,6 +151,10 @@ h1,h2,h3,p{margin:0}.muted{color:var(--muted)} .tiny{font-size:11px}.small{font-
 .detail{overflow:auto;background:#fff}.detail-img{height:330px;position:relative}.detail-img img{width:100%;height:100%;object-fit:cover}.backbtn{position:absolute;left:15px;top:24px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:18px;z-index:2}.detail-body{padding:20px}.detail-body h1{font-size:28px;letter-spacing:-.035em}.detail-body .sub{margin-top:5px;color:var(--muted);font-size:13px}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.metric{background:#f8fafc;border-radius:16px;padding:12px}.metric b{display:block;font-size:15px}.metric span{font-size:10px;color:#64748b}.matchbox{background:#eff6ff;border:1px solid #cfe2fb;border-radius:20px;padding:15px}.matchbox strong{color:#1e4fa3}.matchrow{display:flex;justify-content:space-between;font-size:11px;padding-top:9px}.matchrow b{color:#166534}
 .matchscreen{background:#0f172a;color:#fff;overflow:auto;flex:1;height:100%}.matchtop{padding:20px;display:flex;justify-content:flex-end}.celebrate{text-align:center;padding:22px 24px}.spark{font-size:45px}.matchscreen h1{font-size:32px;letter-spacing:-.04em;margin:12px 0}.homes{position:relative;height:250px;margin:20px auto;width:300px}.home-card{position:absolute;width:148px;height:205px;border:4px solid #fff;border-radius:22px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.3)}.home-card img{width:100%;height:100%;object-fit:cover}.home-card:first-child{left:0;top:20px;transform:rotate(-6deg)}.home-card:nth-child(2){right:0;top:0;transform:rotate(6deg)}.swap{position:absolute;left:50%;top:97px;transform:translateX(-50%);background:var(--blue);width:55px;height:55px;border-radius:50%;display:grid;place-items:center;font-size:24px;border:4px solid #0f172a;z-index:2}.match-actions{display:grid;gap:9px}.match-actions .primary{background:#fff;color:#0f172a;box-shadow:none}.match-actions .secondary{background:transparent;color:#fff;border-color:#475569}
 .chat{background:#f8fafc;overflow:hidden;flex:1;display:flex;flex-direction:column;min-height:0}.chatbar{padding:calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:50%;background:#e6f0fc;color:#1e4fa3;display:grid;place-items:center;font-weight:800;font-size:12px}.chatbody{flex:1;padding:16px;overflow:auto;display:flex;flex-direction:column;justify-content:flex-start;gap:12px}.bubble{max-width:78%;padding:11px 13px;border-radius:18px;font-size:12px;line-height:1.45}.them{background:#fff;border:1px solid var(--line);border-top-left-radius:6px}.me{background:var(--blue);color:#fff;align-self:flex-end;border-top-right-radius:6px}.milestone{background:#eff6ff;border:1px solid #d8e8fb;color:#1e4fa3;padding:9px 12px;border-radius:12px;text-align:center;font-size:10px;font-weight:700}.composer{margin-top:auto;padding:10px;background:#fff;border-top:1px solid var(--line);display:flex;gap:7px}.composer input{flex:1;border:1px solid var(--line);background:#f8fafc;border-radius:15px;padding:11px 13px}.composer button{width:43px;border:0;border-radius:14px;background:var(--blue);color:#fff}
+.chat-swap-cta{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:12px 14px;background:#eff6ff;border-top:1px solid #d8e8fb}
+.chat-swap-cta b{font-size:12px;display:block}
+.chat-swap-cta p{font-size:10.5px;color:#1e4fa3;margin-top:2px}
+.chat-swap-cta.sent{display:none}
 .messages{background:#f8fafc;flex:1;display:flex;flex-direction:column;min-height:0}.messages-body{padding-bottom:10px;overflow:auto}
 .msg-row{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);cursor:pointer}
 .msg-row-body{flex:1;min-width:0}
@@ -380,10 +384,31 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 .overview-item .info-label{font-size:9px}
 .overview-item .info-value{font-size:12.5px;line-height:1.3;margin-top:0}
 
+/* v7: scannable detail page redesign */
+.detail-desc-wrap{position:relative}
+.detail-desc.clamped{display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.desc-more-btn{margin-top:8px;background:transparent;border:0;padding:0;display:flex;align-items:center;gap:4px;color:var(--blue);font-weight:800;font-size:12.5px}
+.desc-more-btn svg{transition:transform .2s}
+.desc-more-btn.open svg{transform:rotate(180deg)}
+.keyinfo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 12px;margin-top:2px}
+.keyinfo-item{display:flex;flex-direction:column;gap:8px;min-width:0}
+.keyinfo-item .info-icon{width:30px;height:30px;border-radius:50%}
+.keyinfo-item .info-label{font-size:9.5px}
+.keyinfo-item .info-value{font-size:16px;line-height:1.25;margin-top:0}
+.spec-row{display:flex;align-items:center;gap:12px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.spec-row:last-child{border-bottom:0}
+.spec-row .info-icon{width:28px;height:28px;border-radius:50%}
+.spec-label{flex:1;font-size:12.5px;font-weight:650;color:#334155;min-width:0}
+.spec-value{font-size:12.5px;font-weight:800;color:#0f172a;text-align:right;white-space:nowrap}
+.ls-map-pill{position:absolute;left:14px;bottom:14px;background:#fff;padding:8px 15px;border-radius:99px;font-weight:800;font-size:12px;color:#0f172a;box-shadow:0 8px 20px rgba(15,23,42,.15)}
+.amenity-chips{display:flex;flex-wrap:wrap;gap:8px}
+.amenity-chip{display:flex;align-items:center;gap:6px;background:var(--light-blue);color:#1e4fa3;border-radius:99px;padding:9px 13px;font-size:12px;font-weight:700}
+.amenity-chip svg{width:14px;height:14px;display:block;flex:0 0 auto}
+.info-row .chevron{color:#cbd5e1;flex:0 0 auto}
+
 /* v6: icon set + flag button */
 .heart{display:flex;align-items:center;justify-content:center}
 .heart.is-fav svg{fill:currentColor}
-.flag-btn{right:60px;color:#64748b}
 .ico svg,.ico-box svg,.info-icon svg,.ls-pin svg,.deck-empty-icon svg{display:block}
 .ls-pin svg{width:34px;height:34px;color:var(--blue)}
 .deck-empty-icon{color:var(--blue)}
@@ -720,7 +745,6 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
               <span class="pill-new" id="deckNewBadge">NIEUW!</span>
             </div>
             <button class="heart flag-btn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button>
-            <button class="heart" id="favBtn" aria-label="Bewaar woning" onclick="saveHome()"><svg id="favIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
             <div class="deck-overlay-info">
               <span class="pill-liked liked-above-title" id="deckLikedBadge"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" style="vertical-align:-1px;margin-right:3px"><path d="M12 21s-7.5-4.6-10-9.3C.5 7.9 2.4 4 6.1 4c2 0 3.6 1.1 4.2 2.6C10.9 5.1 12.5 4 14.5 4c3.7 0 5.6 3.9 4.1 7.7C19.5 16.4 12 21 12 21z"/></svg>Vond jouw woning leuk</span>
               <div class="deck-head-row">
@@ -758,7 +782,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 
 <section id="detail" class="screen">
   <div class="detail scroll">
-    <div class="detail-img"><img id="detailImg" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1100&q=85" alt="Woningfoto"><button class="photo-tap left" aria-label="Vorige foto" onclick="detailPhoto(-1)"></button><button class="photo-tap right" aria-label="Volgende foto" onclick="detailPhoto(1)"></button><div class="photo-dots" id="detailPhotoDots"></div><button class="backbtn" onclick="closeDetail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button><button class="heart detail-fav flag-btn" id="detailReportBtn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button><button class="heart detail-fav" id="detailFavBtn" aria-label="Bewaar woning" onclick="saveHome()"><svg id="detailFavIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button></div>
+    <div class="detail-img"><img id="detailImg" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1100&q=85" alt="Woningfoto"><button class="photo-tap left" aria-label="Vorige foto" onclick="detailPhoto(-1)"></button><button class="photo-tap right" aria-label="Volgende foto" onclick="detailPhoto(1)"></button><div class="photo-dots" id="detailPhotoDots"></div><button class="backbtn" onclick="closeDetail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button><button class="heart detail-fav flag-btn" id="detailReportBtn" aria-label="Advertentie melden" onclick="reportListing()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V4s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="4"/></svg></button></div>
     <div class="detail-body">
       <div class="deck-head-row">
         <h1 id="detailTitle">Weesperzijde 84</h1>
@@ -776,42 +800,48 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
 
       <div class="detail-section">
         <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="14" y2="18"/></svg></span><h3>Omschrijving</h3></div>
-        <p class="detail-desc" id="detailDesc">Beschrijving volgt.</p>
-      </div>
-
-      <div class="detail-section">
-        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 11h6M9 15h4"/></svg></span><h3>Overzicht</h3></div>
-        <div class="overview-grid">
-        <div class="overview-item"><span class="info-icon">€</span><div><div class="info-label">Huurprijs</div><div class="info-value" id="ovHuur">€685</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span><div><div class="info-label">Servicekosten</div><div class="info-value" id="ovService">€35</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Aantal kamers</div><div class="info-value" id="ovRooms">3</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Bouwjaar</div><div class="info-value" id="ovYear">2013</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><div><div class="info-label">Energielabel</div><div class="info-value" id="ovEnergy">A</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><div><div class="info-label">Oppervlakte</div><div class="info-value" id="ovSize">78 m²</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Min. bewoners</div><div class="info-value" id="ovMinOcc">Niet gespecificeerd</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><div class="info-label">Max. bewoners</div><div class="info-value" id="ovMaxOcc">Niet gespecificeerd</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><div class="info-label">Ligging</div><div class="info-value" id="ovLigging">Niet gespecificeerd</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Min. leeftijd</div><div class="info-value" id="ovMinAge">Niet gespecificeerd</div></div></div>
-        <div class="overview-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.5 3H4a1 1 0 0 0-1 1v5.5a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83z"/><circle cx="7.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/></svg></span><div><div class="info-label">Woninglabel</div><div class="info-value" id="ovLabel">Niet gespecificeerd</div></div></div>
+        <div class="detail-desc-wrap">
+          <p class="detail-desc clamped" id="detailDesc">Beschrijving volgt.</p>
+          <button class="desc-more-btn" id="descMoreBtn" onclick="toggleDesc()"><span>Meer tonen</span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
         </div>
       </div>
 
       <div class="detail-section">
-        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><h3>Locatie</h3></div>
-        <div class="ls-map"><span class="ls-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span></div>
-        <div class="ls-map-label" id="ovCity">Amsterdam-Oost</div>
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 3h6v3H9z"/><path d="M9 11h6M9 15h4"/></svg></span><h3>Belangrijkste info</h3></div>
+        <div class="keyinfo-grid">
+        <div class="keyinfo-item"><span class="info-icon">€</span><div><div class="info-label">Huurprijs</div><div class="info-value" id="ovHuur">€685</div></div></div>
+        <div class="keyinfo-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></span><div><div class="info-label">Servicekosten</div><div class="info-value" id="ovService">€35</div></div></div>
+        <div class="keyinfo-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Aantal kamers</div><div class="info-value" id="ovRooms">3</div></div></div>
+        <div class="keyinfo-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></span><div><div class="info-label">Woonoppervlakte</div><div class="info-value" id="ovSize">78 m²</div></div></div>
+        <div class="keyinfo-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><div><div class="info-label">Bouwjaar</div><div class="info-value" id="ovYear">2013</div></div></div>
+        <div class="keyinfo-item"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span><div><div class="info-label">Energielabel</div><div class="info-value" id="ovEnergy">A</div></div></div>
+        </div>
       </div>
 
       <div class="detail-section">
-        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 11l2 2 4-4"/></svg></span><h3>Woonwensen van deze huurder</h3></div>
-        <div class="info-row"><span class="info-icon">€</span><div><div class="info-label">Huurprijs</div><div class="info-value" id="wwPrice">€ 0 - 1000</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><div class="info-label">Plaats</div><div class="info-value" id="wwCity">Amsterdam</div></div></div>
-        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div><div class="info-label">Minimaal aantal kamers</div><div class="info-value" id="wwRooms">2 kamers</div></div></div>
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span><h3>Woning</h3></div>
+        <div class="spec-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span class="spec-label">Min. bewoners</span><span class="spec-value" id="ovMinOcc">Niet gespecificeerd</span></div>
+        <div class="spec-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="spec-label">Max. bewoners</span><span class="spec-value" id="ovMaxOcc">Niet gespecificeerd</span></div>
+        <div class="spec-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="spec-label">Ligging</span><span class="spec-value" id="ovLigging">Niet gespecificeerd</span></div>
+        <div class="spec-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span><span class="spec-label">Min. leeftijd</span><span class="spec-value" id="ovMinAge">Niet gespecificeerd</span></div>
+        <div class="spec-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20.59 13.41L11 3.83A2 2 0 0 0 9.5 3H4a1 1 0 0 0-1 1v5.5a2 2 0 0 0 .59 1.41l9.58 9.58a2 2 0 0 0 2.83 0l4.59-4.59a2 2 0 0 0 0-2.83z"/><circle cx="7.5" cy="7.5" r="1.1" fill="currentColor" stroke="none"/></svg></span><span class="spec-label">Woninglabel</span><span class="spec-value" id="ovLabel">Niet gespecificeerd</span></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><h3>Locatie</h3></div>
+        <div class="ls-map"><span class="ls-pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><span class="ls-map-pill" id="ovCity">Amsterdam-Oost</span></div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17 11l2 2 4-4"/></svg></span><h3>Woonwensen</h3></div>
+        <div class="info-row"><span class="info-icon">€</span><div style="flex:1"><div class="info-label">Huurprijs</div><div class="info-value" id="wwPrice">€ 0 - 1000</div></div><svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div style="flex:1"><div class="info-label">Plaats</div><div class="info-value" id="wwCity">Amsterdam</div></div><svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+        <div class="info-row"><span class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M2 18v-6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v6"/><path d="M2 18v2"/><path d="M22 18v2"/><path d="M2 12V9a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v3"/></svg></span><div style="flex:1"><div class="info-label">Minimaal aantal kamers</div><div class="info-value" id="wwRooms">2 kamers</div></div><svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
       </div>
 
       <div class="detail-section">
         <div class="detail-section-head"><span class="ico-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span><h3>Voorzieningen</h3></div>
-        <div id="detailAmenities"></div>
+        <div class="amenity-chips" id="detailAmenities"></div>
       </div>
 
       <div class="detail-section">
@@ -894,6 +924,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background:radial-gradie
  <div class="chat">
   <div class="chatbar"><button class="ghost" onclick="go('messages')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 18l-6-6 6-6"/></svg></button><div class="avatar">SJ</div><div style="flex:1"><b style="font-size:13px">Sophie Janssen</b><div class="tiny muted">Amsterdam-Oost · Ymere</div></div><button class="iconbtn" onclick="go('exchange')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button></div>
   <div class="chatbody scroll"><div class="milestone">Vandaag · Ruilmatch geaccepteerd door beide partijen</div><div class="bubble them">Hoi! Wat een mooie woning heb je. Zullen we zaterdag even bellen om de woningruil te bespreken?</div><div class="bubble me">Hoi Sophie! Jazeker. We zijn vooral benieuwd of de locatie en voorwaarden voor ons allebei goed uitpakken.</div><div class="bubble them">Lijkt me goed. Ik heb mijn gegevens alvast gecontroleerd. Zullen we daarna samen de aanvraag bekijken?</div></div>
+  <div class="chat-swap-cta" id="chatSwapCta"><div><b>Klaar voor de volgende stap?</b><p>Laat Sophie weten dat je deze woning wilt ruilen.</p></div><button class="primary" style="padding:10px 14px;font-size:11.5px;border-radius:12px;flex:0 0 auto" onclick="proposeSwap()">Ik wil ruilen</button></div>
   <div class="composer"><input placeholder="Schrijf een bericht…" id="msg"><button onclick="sendMsg()">↑</button></div>
  </div>
 </section>
@@ -1277,7 +1308,7 @@ const obNum={surface:75,rooms:3,familySize:2,stFamilySize:2};
 function obAdjustNum(key,delta,min){obNum[key]=Math.max(min,obNum[key]+delta);document.getElementById('obVal_'+key).textContent=obNum[key]}
 function obFilterCorp(q){q=q.toLowerCase();document.querySelectorAll('#obCorpList .choice').forEach(el=>{el.style.display=el.textContent.toLowerCase().includes(q)?'':'none'})}
 let lsFromOnboarding=false;
-function obFinish(){lsFromOnboarding=true;go('listing');lsGoTo(0)}
+function obFinish(){lsFromOnboarding=true;go('listing');lsGoTo(0);lsState.size=obNum.surface;lsState.rooms=obNum.rooms;lsRenderPreview()}
 const lsState={size:68,rooms:3,title:'Amsterdam Noord',price:'€780 / maand'};
 let lsIndex=0;
 function lsGoTo(i){
@@ -1287,8 +1318,16 @@ function lsGoTo(i){
  if(i===5)lsRenderPreview();
  lsIndex=i;
 }
-function lsNext(){if(lsIndex<5)lsGoTo(lsIndex+1);else lsPublish()}
-function lsBack(){if(lsIndex>0)lsGoTo(lsIndex-1)}
+function lsNext(){
+ let next=lsIndex+1;
+ if(lsFromOnboarding&&next===1)next=2;
+ if(next<=5)lsGoTo(next);else lsPublish();
+}
+function lsBack(){
+ let prev=lsIndex-1;
+ if(lsFromOnboarding&&prev===1)prev=0;
+ if(prev>=0)lsGoTo(prev);
+}
 function lsRenderPreview(){
  document.getElementById('lsFactSize').textContent=lsState.size+' m²';
  document.getElementById('lsFactRooms').textContent=lsState.rooms+' kamers';
@@ -1305,13 +1344,13 @@ function lsSyncDescCount(){
  const el=document.getElementById('lsDescInput');
  document.getElementById('lsDescCount').textContent=el.value.length+' / 600 tekens';
 }
+function lsToggleChip(el){el.classList.toggle('selected')}
 function lsAdjust(key,delta){
  const min=key==='size'?20:1;
  lsState[key]=Math.max(min,lsState[key]+delta);
  document.getElementById(key==='size'?'lsSize':'lsRooms').textContent=lsState[key];
  lsRenderPreview();
 }
-function lsToggleChip(el){el.classList.toggle('selected')}
 function lsPublish(){
  toast(lsFromOnboarding?'Profiel compleet! Welkom bij Ruilmijnwoning':`Advertentie gepubliceerd ${ICON_HEART_SM}`);
  const dest=lsFromOnboarding?'discover':'profile';
@@ -1459,8 +1498,6 @@ function renderTopCard(){
  document.getElementById('deckPrice').textContent=item.price;
  document.getElementById('deckSub').textContent=item.sub+' · '+item.landlord;
  document.getElementById('deckFacts').innerHTML=factsIconsHtml(item.facts);
- const favBtn=document.getElementById('favBtn');
- favBtn.classList.toggle('is-fav',item.favorited);
  const starBtn=document.getElementById('starBtn');
  if(starBtn)starBtn.classList.toggle('is-fav',item.favorited);
  const next=deckState.queue[1];
@@ -1513,8 +1550,6 @@ function saveHome(){
  renderTopCard();
  const starBtn=document.getElementById('starBtn');
  if(starBtn){starBtn.classList.remove('pop');void starBtn.offsetWidth;starBtn.classList.add('pop')}
- const detailFavBtn=document.getElementById('detailFavBtn');
- if(detailFavBtn)detailFavBtn.classList.toggle('is-fav',item.favorited);
  if(document.getElementById('saved').classList.contains('active'))renderSaved();
 }
 function openDetail(){openDetailFor(deckState.queue[0],'discover')}
@@ -1537,7 +1572,12 @@ function openDetailFor(item,returnScreen,isOwn){
   document.getElementById('detailSub').textContent=item.sub;
   document.getElementById('detailFacts').innerHTML=factsIconsHtml(item.facts);
   document.getElementById('detailDesc').textContent=item.desc;
-  document.getElementById('detailAmenities').innerHTML=item.amenities.map(a=>`<div class="amenity-row">• ${a}</div>`).join('');
+  document.getElementById('detailDesc').classList.add('clamped');
+  const descBtn=document.getElementById('descMoreBtn');
+  descBtn.classList.remove('open');
+  descBtn.querySelector('span').textContent='Meer tonen';
+  descBtn.style.display=document.getElementById('detailDesc').scrollHeight>document.getElementById('detailDesc').clientHeight+2?'':'none';
+  document.getElementById('detailAmenities').innerHTML=item.amenities.map(a=>`<span class="amenity-chip">${amenityIconHtml(a)}${a}</span>`).join('');
   document.getElementById('detailLandlord').textContent=item.landlord;
   document.getElementById('ovHuur').textContent=item.price.split(' / ')[0];
   document.getElementById('ovService').textContent=item.serviceCosts;
@@ -1550,10 +1590,7 @@ function openDetailFor(item,returnScreen,isOwn){
   document.getElementById('wwPrice').textContent=item.wishes.price;
   document.getElementById('wwCity').textContent=item.wishes.city;
   document.getElementById('wwRooms').textContent=item.wishes.rooms;
-  const detailFavBtn=document.getElementById('detailFavBtn');
-  if(detailFavBtn)detailFavBtn.classList.toggle('is-fav',item.favorited);
   document.getElementById('detailReportBtn').style.display=isOwn?'none':'';
-  if(detailFavBtn)detailFavBtn.style.display=isOwn?'none':'';
   document.getElementById('detailBadgeRow').style.display=isOwn?'none':'';
   document.getElementById('detailVisitorActions').style.display=isOwn?'none':'';
   document.getElementById('detailOwnerActions').style.display=isOwn?'block':'none';
@@ -1566,7 +1603,37 @@ function likeHome(){
  if(document.getElementById('detail').classList.contains('active'))go('discover');
  commitSwipe('right','button');
 }
+function toggleDesc(){
+ const p=document.getElementById('detailDesc');
+ const btn=document.getElementById('descMoreBtn');
+ p.classList.toggle('clamped');
+ btn.classList.toggle('open');
+ btn.querySelector('span').textContent=p.classList.contains('clamped')?'Meer tonen':'Minder tonen';
+}
+function amenityIconHtml(name){
+ const n=name.toLowerCase();
+ if(n.includes('energielabel'))return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
+ if(n.includes('lift'))return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21V3M8 3L5 6M8 3l3 3M16 3v18M16 21l-3-3M16 21l3-3"/></svg>`;
+ if(n.includes('parkeren'))return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="7" rx="2"/><circle cx="7.5" cy="18" r="1.3"/><circle cx="16.5" cy="18" r="1.3"/><path d="M5 11l1.5-4h11L19 11"/></svg>`;
+ if(n.includes('berging'))return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>`;
+ if(n.includes('tuin'))return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.5-8.5C1 9 2.5 5 6 5c2 0 3.5 1.2 4 2.5C10.5 6.2 12 5 14 5c3.5 0 5 4 3.5 7.5C19 16.65 12 21 12 21z"/></svg>`;
+ if(n.includes('huisdieren'))return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="15" r="5"/><circle cx="6" cy="7" r="2"/><circle cx="18" cy="7" r="2"/></svg>`;
+ if(n.includes('balkon'))return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>`;
+ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+}
 function sendMsg(){const i=document.getElementById('msg');if(i.value.trim()){const d=document.createElement('div');d.className='bubble me';d.textContent=i.value;document.querySelector('.chatbody').appendChild(d);i.value='';document.querySelector('.chatbody').scrollTop=99999}}
+function proposeSwap(){
+ const body=document.querySelector('#chat .chatbody');
+ const d=document.createElement('div');
+ d.className='bubble me';
+ d.textContent='Ik wil deze woning met je ruilen! 🔁';
+ body.appendChild(d);
+ body.scrollTop=99999;
+ const cta=document.getElementById('chatSwapCta');
+ if(cta)cta.classList.add('sent');
+ unlockDossier();
+ toast('Ruilverzoek verstuurd naar Sophie Janssen');
+}
 obGoTo(0);
 lsGoTo(0);
 lsSyncDescCount();
